@@ -64,6 +64,9 @@ export default {
       template: "./index.html",
     }),
     new Dotenv(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.BASE_URL),
+    }),
   ],
 
   devServer: {
