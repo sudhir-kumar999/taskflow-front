@@ -17,7 +17,7 @@ export const getUser = async () => {
     console.log(res);
     return res;
   } catch (error: any) {
-    return null;
+    return error.response.data.message;
   }
 };
 
@@ -45,8 +45,8 @@ export const fetchLogin = async (formField: userdetails): Promise<any> => {
         "Content-Type": "application/json",
       },
     });
-    return res.data.message;
-    // return res;
+    // return res.data.message;
+    return res;
   } catch (error: any) {
     return error.response.data.message
   }

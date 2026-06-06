@@ -33,9 +33,9 @@ console.log("res",res)
         console.log("user")
       const userRes = await getUser();
       
-      if (userRes.data?.data) {
+      if (userRes?.data?.data) {
         console.log("user ser")
-        setUser(userRes.data.data);
+        setUser(userRes?.data?.data);
       }
       navigate("/");
     }else{
