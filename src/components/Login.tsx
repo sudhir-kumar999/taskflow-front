@@ -29,7 +29,7 @@ const Login = () => {
     console.log(formField);
     const res = await fetchLogin(formField);
 console.log("res",res)
-    if (res?.data) {
+    if (res) {
         console.log("user")
       const userRes = await getUser();
       

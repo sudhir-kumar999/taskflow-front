@@ -45,8 +45,8 @@ export const fetchLogin = async (formField: userdetails): Promise<any> => {
         "Content-Type": "application/json",
       },
     });
-    // return res.data.message;
-    return res;
+    return res.data.message;
+    // return res;
   } catch (error: any) {
     return error.response.data.message
   }
