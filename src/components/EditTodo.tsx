@@ -1,0 +1,134 @@
+import Box from "@mui/material/Box";
+import React, { useContext } from "react";
+import { userContext } from "../userContext/userContext.tsx";
+import { deleteTodo, updateTodo } from "../api.ts";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import { toast } from "react-toastify";
+
+const EditTodo = ({ getTodos }) => {
+  const { selectTodo, setSelectTodo, mainTodo, open, setOpen } =
+    useContext(userContext)!;
+
+  const upDateTodoNew = async () => {
+    if (!selectTodo) {
+      return;
+    }
+    if (!mainTodo) {
+      return;
+    }
+    const updateData: any = {};
+    if (selectTodo.title != mainTodo.title) {
+      updateData.title = selectTodo.title;
+    }
+    if (selectTodo.description != mainTodo.description) {
+      updateData.description = selectTodo.description;
+    }
+    if (selectTodo.priority != mainTodo.priority) {
+      updateData.priority = selectTodo.priority;
+    }
+    if (selectTodo.status != mainTodo.status) {
+      updateData.status = selectTodo.status;
+    }
+    const res = await updateTodo(selectTodo.id, {
+      title: selectTodo.title,
+      description: selectTodo.description,
+      priority: selectTodo.priority,
+      status: selectTodo.status,
+      dueDate: selectTodo.dueDate,
+    });
+    console.log("res data update", res);
+    if (res?.data) {
+      toast.success("todo updated successfully");
+      await getTodos();
+      setOpen(false);
+    }
+  };
+
+  const handleDeleteTodo = async () => {
+    if (!selectTodo) return null;
+    const res = await deleteTodo(selectTodo.id);
+    if (res?.data?.success) {
+      toast.success(res.data.message);
+      await getTodos();
+
+      setOpen(false);
+    }
+  };
+  return (
+    <Dialog open={open} onClose={() => setOpen(false)} fullWidth>
+      <DialogTitle>Edit Todo</DialogTitle>
+      <DialogContent
+        sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}
+      >
+        <TextField
+          label="title"
+          value={selectTodo?.title || ""}
+          onChange={(e) =>
+            setSelectTodo({ ...selectTodo, title: e.target.value })
+          }
+        />
+
+        <TextField
+          label="description"
+          value={selectTodo?.description || ""}
+          onChange={(e) =>
+            setSelectTodo({ ...selectTodo, description: e.target.value })
+          }
+        />
+        <FormControl>
+          <InputLabel>Status</InputLabel>
+          <Select
+            name="status"
+            value={selectTodo?.status || "ACTIVE"}
+            label="status"
+            onChange={(e) =>
+              setSelectTodo({ ...selectTodo, status: e.target.value })
+            }
+          >
+            <MenuItem value="ACTIVE">ACTIVE</MenuItem>
+            <MenuItem value="COMPLETED">COMPLETED</MenuItem>
+            {/* <MenuItem value="HIGH">HIGH</MenuItem> */}
+          </Select>
+        </FormControl>
+
+        <FormControl>
+          <InputLabel>Priority</InputLabel>
+          <Select
+            name="priority"
+            value={selectTodo?.priority || "ACTIVE"}
+            label="status"
+            onChange={(e) =>
+              setSelectTodo({ ...selectTodo, priority: e.target.value })
+            }
+          >
+            <MenuItem value="LOW">LOW</MenuItem>
+            <MenuItem value="MEDIUM">MEDIUM</MenuItem>
+            <MenuItem value="HIGH">HIGH</MenuItem>
+          </Select>
+        </FormControl>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="contained" onClick={() => setOpen(false)}>
+          Cancel
+        </Button>
+        <Button variant="contained" onClick={upDateTodoNew}>
+          Save
+        </Button>
+        <Button variant="contained" onClick={handleDeleteTodo}>
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+export default EditTodo;
