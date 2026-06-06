@@ -78,7 +78,7 @@ interface Props {
               <ListItemText primary="Filter By Status" />
             </ListItemButton>
           </ListItem>
-          <ListItem  disablePadding>
+          {/* <ListItem  disablePadding>
             <ListItemButton
             component={NavLink}
             to="/status/ALL"
@@ -88,7 +88,7 @@ interface Props {
               </ListItemIcon>
               <ListItemText primary="ALL" />
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
           <ListItem  disablePadding>
             <ListItemButton 
             component={NavLink}

@@ -1,4 +1,6 @@
 import React from "react";
+import { todo } from "../type.ts";
+// import Todo from '../components/Todo';
 type userdetails={
 name:string
 email:string
@@ -19,11 +21,11 @@ type contextType={
    formField:userdetails
    user:userres|null
    loading:boolean,
-   selectTodo:any,
-   setSelectTodo:React.Dispatch<React.SetStateAction<any>>,
+   selectTodo:todo|null,
+   setSelectTodo:React.Dispatch<React.SetStateAction<todo|null>>,
    open:boolean,
-   mainTodo:any
-   setMainTodo:React.Dispatch<React.SetStateAction<any>>,
+   mainTodo:todo|null
+   setMainTodo:React.Dispatch<React.SetStateAction<todo|null>>,
    setOpen:React.Dispatch<React.SetStateAction<boolean>>,
    setLoading:React.Dispatch<React.SetStateAction<boolean>>,
    setUser:React.Dispatch<React.SetStateAction<userres|null>>

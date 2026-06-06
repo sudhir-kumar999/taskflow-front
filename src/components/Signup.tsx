@@ -6,7 +6,6 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Button from "@mui/material/Button";
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { userContext } from "../userContext/userContext.tsx";
-// import { fetchData } from '../api';
 
 const Signup = () => {
   const adornmentId = React.useId();
@@ -24,20 +23,10 @@ const {formField,setFormField,fetchData,setUser,backError,setBackError}=useConte
         setError("Confirm Password does not matches")
     }
     setError("")
-    
     let res=await fetchData(formField)
-    // console.log("errorsignup",res)
     setResponse(res)
     navigate("/login")
-    // setFormField({
-    //   name: "",
-    //   email: "",
-    //   password: "",
-    //   confirmPassword: "",
-    // });
   }
-  
-
   return (
     <Box
       sx={{

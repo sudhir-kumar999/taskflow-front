@@ -2,6 +2,7 @@ import React, { useEffect, useReducer, useState } from "react";
 import { userContext } from "./userContext.tsx";
 import { fetchLogin, getUser, sendLink } from "../api.ts";
 import { fetchData } from '../api.ts';
+import { todo } from "../type.ts";
 
 export type child = {
   children: React.ReactNode;
@@ -23,8 +24,8 @@ const UserProvider = ({ children }: child) => {
     const [backError,setBackError]=useState("")
     const [loading,setLoading]=useState(true)
       const [open,setOpen]=useState(false)
-      const [selectTodo,setSelectTodo]=useState<any>(null)
-        const [mainTodo,setMainTodo]=useState<any>(null)
+      const [selectTodo,setSelectTodo]=useState<todo|null>(null)
+        const [mainTodo,setMainTodo]=useState<todo|null>(null)
     const [formField, setFormField] = useState<userdetails>({
         name: "",
         email: "",

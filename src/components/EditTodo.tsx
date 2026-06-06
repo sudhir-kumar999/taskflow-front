@@ -13,8 +13,11 @@ import MenuItem from "@mui/material/MenuItem";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { toast } from "react-toastify";
-
-const EditTodo = ({ getTodos }) => {
+import { priority, todo } from "../type.ts";
+type props={
+    getTodos:()=>Promise<void>
+}
+const EditTodo = ({ getTodos }:props) => {
   const { selectTodo, setSelectTodo, mainTodo, open, setOpen } =
     useContext(userContext)!;
 
@@ -25,7 +28,7 @@ const EditTodo = ({ getTodos }) => {
     if (!mainTodo) {
       return;
     }
-    const updateData: any = {};
+    const updateData: Partial<todo> = {};
     if (selectTodo.title != mainTodo.title) {
       updateData.title = selectTodo.title;
     }
@@ -72,16 +75,18 @@ const EditTodo = ({ getTodos }) => {
         <TextField
           label="title"
           value={selectTodo?.title || ""}
-          onChange={(e) =>
-            setSelectTodo({ ...selectTodo, title: e.target.value })
+          onChange={(e) =>{
+    if (!selectTodo) return null;
+            setSelectTodo({ ...selectTodo, title: e.target.value })}
           }
         />
 
         <TextField
           label="description"
           value={selectTodo?.description || ""}
-          onChange={(e) =>
-            setSelectTodo({ ...selectTodo, description: e.target.value })
+          onChange={(e) =>{
+    if (!selectTodo) return null;
+            setSelectTodo({ ...selectTodo, description: e.target.value })}
           }
         />
         <FormControl>
@@ -90,13 +95,13 @@ const EditTodo = ({ getTodos }) => {
             name="status"
             value={selectTodo?.status || "ACTIVE"}
             label="status"
-            onChange={(e) =>
-              setSelectTodo({ ...selectTodo, status: e.target.value })
+            onChange={(e) =>{
+    if (!selectTodo) return null;
+              setSelectTodo({ ...selectTodo, status: e.target.value })}
             }
           >
             <MenuItem value="ACTIVE">ACTIVE</MenuItem>
             <MenuItem value="COMPLETED">COMPLETED</MenuItem>
-            {/* <MenuItem value="HIGH">HIGH</MenuItem> */}
           </Select>
         </FormControl>
 
@@ -104,10 +109,11 @@ const EditTodo = ({ getTodos }) => {
           <InputLabel>Priority</InputLabel>
           <Select
             name="priority"
-            value={selectTodo?.priority || "ACTIVE"}
+            value={selectTodo?.priority || "LOW"}
             label="status"
-            onChange={(e) =>
-              setSelectTodo({ ...selectTodo, priority: e.target.value })
+            onChange={(e) =>{
+                if (!selectTodo) return null;
+              setSelectTodo({ ...selectTodo, priority: e.target.value })}
             }
           >
             <MenuItem value="LOW">LOW</MenuItem>
