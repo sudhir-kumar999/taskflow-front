@@ -30,9 +30,9 @@ export const fetchData = async (formField: userdetails) => {
         "Content-Type": "application/json",
       },
     });
-    return res.data.message;
+    return res
   } catch (error: any) {
-    return error.response.data.message;
+    return error.response;
   }
 };
 
@@ -48,7 +48,9 @@ export const fetchLogin = async (formField: userdetails): Promise<any> => {
     // return res.data.message;
     return res;
   } catch (error: any) {
-    return error.response.data.message
+    // return error.response.data.message
+    return error.response
+
   }
 };
 
@@ -120,7 +122,7 @@ export const addTodo = async (todoData: data) => {
     });
     return res
   } catch (error:any) {
-    return error.response.data.message
+    return error.response
   }
 };
 
@@ -145,6 +147,18 @@ export const updateTodo = async (taskId: string, data: any) => {
 export const deleteTodo=async(taskId:string)=>{
     try {
         const res=await axios.delete(`${BASE_URL}/todo/delete-todo/${taskId}`,{
+            withCredentials:true
+        })
+        return res
+    } catch (error:any) {
+        return error.response.data.message
+    }
+}
+
+
+export const logout=async()=>{
+    try {
+        const res=await axios.get(`${BASE_URL}/user/logout`,{
             withCredentials:true
         })
         return res

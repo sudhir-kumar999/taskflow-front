@@ -4,11 +4,13 @@ import { Navigate, Outlet } from "react-router-dom";
 import Footer from "./Footer.tsx";
 import Box from "@mui/material/Box";
 import { userContext } from "../userContext/userContext.tsx";
-
+import CircularProgress from '@mui/material/CircularProgress';
 const MainLayout = () => {
     const {user,loading}=useContext(userContext)!
      if(loading){
-        return <Box>Loading...</Box>
+        return <Box sx={{ display: 'flex' ,justifyContent:"center",alignItems:"center",height:"100vh"}}>
+      <CircularProgress aria-label="Loading…" />
+    </Box>
     }
     if(!user){
         return <Navigate to="/login" replace />

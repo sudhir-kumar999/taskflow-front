@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import React, { useContext } from "react";
 import { userContext } from "../userContext/userContext.tsx";
-import { deleteTodo, updateTodo } from "../api.ts";
+import { deleteTodo, fetchTodos, updateTodo } from "../api.ts";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -51,7 +51,7 @@ const EditTodo = ({ getTodos }:props) => {
     console.log("res data update", res);
     if (res?.data) {
       toast.success("todo updated successfully");
-      await getTodos();
+      await fetchTodos();
       setOpen(false);
     }
   };

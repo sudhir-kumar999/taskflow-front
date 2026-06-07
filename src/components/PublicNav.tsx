@@ -29,7 +29,6 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { getUser, logout } from '../api.ts';
 import { userContext } from '../userContext/userContext.tsx';
 import { toast } from 'react-toastify';
-import PublicNav from './PublicNav.tsx';
 const drawerWidth = 300;
 
 interface Props {
@@ -37,7 +36,7 @@ interface Props {
   window?: () => Window;
 }
 
- function Navbar(props: Props) {
+ function PublicNav(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
@@ -59,134 +58,64 @@ interface Props {
     }
   };
 
-  const handleLogout=async()=>{
-    const res=await logout()
-    toast.success("logout successful")
-setUser(null)
-    console.log(res)
-navigate("/login")
-    // if(res?.data)
-  }
-  if(!user){
-    return <PublicNav/>
-  }
+
 
   const drawer = (
     <div>
       <Toolbar />
       <Divider />
       <List>
-          <ListItem  disablePadding>
-            <ListItemButton
-            component={NavLink}
-            to="/todos"
-            >
-              <ListItemIcon>
-                <ChecklistIcon/>
-              </ListItemIcon>
-              <ListItemText primary="All Todo" />
-            </ListItemButton>
-          </ListItem>
-      <Divider />
 
-          <ListItem  disablePadding>
+        <ListItem  disablePadding>
             <ListItemButton>
               <ListItemIcon>
                 <FilterAltIcon/>
               </ListItemIcon>
-              <ListItemText primary="Filter By Status" />
+              <ListItemText primary="Authentication" />
             </ListItemButton>
           </ListItem>
-          {/* <ListItem  disablePadding>
+
+          <ListItem  disablePadding>
             <ListItemButton
             component={NavLink}
-            to="/status/ALL"
+            to="/signup"
             >
               <ListItemIcon>
-                <AppsIcon/>
+                <ChecklistIcon/>
               </ListItemIcon>
-              <ListItemText primary="ALL" />
+              <ListItemText primary="sign up" />
             </ListItemButton>
-          </ListItem> */}
+          </ListItem>
+
+          
+          
           <ListItem  disablePadding>
             <ListItemButton 
             component={NavLink}
-            to="/todos/status/ACTIVE"
+            to="/signup"
             >
               <ListItemIcon>
                 <PendingActionsIcon/>
               </ListItemIcon>
-              <ListItemText primary="ACTIVE" />
+              <ListItemText primary="Log in" />
             </ListItemButton>
           </ListItem>
           <ListItem  disablePadding>
             <ListItemButton 
             component={NavLink}
-            to="/todos/status/COMPLETED"
+            to="/login"
             >
               <ListItemIcon>
                 <DoneAllIcon/>
               </ListItemIcon>
-              <ListItemText primary="COMPLETED" />
+              <ListItemText primary="Send Verification Link" />
             </ListItemButton>
           </ListItem>
         {/* ))} */}
       </List>
       <Divider />
-      <List>
-        <ListItem  disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <PriorityHighIcon/>
-              </ListItemIcon>
-              <ListItemText primary="Filter By Priority" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem  disablePadding>
-            <ListItemButton
-            component={NavLink}
-            to="/todos/priority/LOW"
-            >
-              <ListItemIcon>
-                <LowPriorityIcon/>
-              </ListItemIcon>
-              <ListItemText primary="LOW" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem  disablePadding>
-            <ListItemButton
-            component={NavLink}
-            to="/todos/priority/MEDIUM"
-            >
-              <ListItemIcon>
-                <DensityMediumIcon/>
-              </ListItemIcon>
-              <ListItemText primary="MEDIUM" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem  disablePadding>
-            <ListItemButton
-            component={NavLink}
-            to="/todos/priority/HIGH"
-            >
-              <ListItemIcon>
-                <KeyboardDoubleArrowUpIcon/>
-              </ListItemIcon>
-              <ListItemText primary="HIGH" />
-            </ListItemButton>
-          </ListItem>
-      </List>
-      <ListItem sx={{position:"absolute",bottom:"10px"}} disablePadding>
-            <ListItemButton
-            component={NavLink}
-            to="/todos/priority/HIGH"
-            >
-              <ListItemIcon>
-                <LogoutIcon/>
-              </ListItemIcon>
-              <ListItemText primary="Logout" onClick={handleLogout}/>
-            </ListItemButton>
-          </ListItem>
+      
+      
     </div>
   );
 
@@ -253,42 +182,10 @@ navigate("/login")
           {drawer}
         </Drawer>
       </Box>
-      {/* <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
-      >
-        <Toolbar />
-        <Typography sx={{ marginBottom: 2 }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography>
-        <Typography sx={{ marginBottom: 2 }}>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
-      </Box> */}
+        
     </Box>
   );
 }
 
 
-export default Navbar
+export default PublicNav

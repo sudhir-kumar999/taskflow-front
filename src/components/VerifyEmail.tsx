@@ -98,7 +98,7 @@ const VerifyEmail = () => {
             }}
           >
             <NavLink to="/signup">Not Register ? Signup here</NavLink>
-            <NavLink to="/verify">Already Verified ? Login here</NavLink>
+            <NavLink to="/login">Already Verified ? Login here</NavLink>
           </Box>
 
           <Button

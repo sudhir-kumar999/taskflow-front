@@ -17,34 +17,33 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState("");
-  const [iserror, setIsError] = useState(false);
+  const [loading,setLoading]=useState(false)
   const { fetchLogin } = useContext(userContext)!;
-  const { setUser, getUser } = useContext(userContext)!;
+  const { setUser, getUser,user } = useContext(userContext)!;
   const navigate = useNavigate();
 
   async function handleLogin(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) {
     e.preventDefault();
-    console.log(formField);
+    setLoading(true)
     const res = await fetchLogin(formField);
 console.log("res",res)
-    if (res) {
-        console.log("user")
+    if (res?.data?.success) {
       const userRes = await getUser();
-      
-      if (userRes?.data?.data) {
-        console.log("user ser")
         setUser(userRes?.data?.data);
-      }
+      setLoading(false)
       navigate("/");
     }else{
-        setError("login failed")
+        // if(!user){
+        //     // await getUser();
+        //     navigate("/login")
+        //     return
+        // }
+        setError(res?.data?.message)
+        setLoading(false)
     }
-    // setFormField({
-    //   email: "",
-    //   password: "",
-    // });
+
   }
   return (
     <Box
@@ -94,7 +93,6 @@ console.log("res",res)
           <Box sx={{ color: "red" }}>{error}</Box>
 
           <Box sx={{ width: 500, maxWidth: "100%" }}>
-            {iserror && <p>{error}</p>}
             <TextField
               fullWidth
               label="Enter your Email"
@@ -106,7 +104,6 @@ console.log("res",res)
             />
           </Box>
           <Box sx={{ width: 500, maxWidth: "100%" }}>
-            {iserror && <p>{error}</p>}
             <TextField
               fullWidth
               label="Enter password"
@@ -135,7 +132,7 @@ console.log("res",res)
             type="submit"
             size="large"
           >
-            Log in
+            {loading?"loading...":"Log in"}
           </Button>
         </Box>
       </Box>

@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { SelectChangeEvent } from "@mui/material/Select";
 import {
   addTodo,
@@ -23,6 +23,7 @@ import IconButton from "@mui/material/IconButton";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { todo } from "../type.ts";
+import { status } from '../type';
 
 const Todo = () => {
   const { status, priority } = useParams();
@@ -37,6 +38,7 @@ const Todo = () => {
   const { open, setOpen, selectTodo, setSelectTodo, mainTodo, setMainTodo } =
     useContext(userContext)!;
   const [response, setResponse] = useState("");
+  const navigate=useNavigate()
   const getTodos = async () => {
     setLoading(true);
 
@@ -48,9 +50,12 @@ const Todo = () => {
     } else {
       res = await fetchTodos();
     }
+    if(res?.data?.message==="JWT expired login again"){
+            window.location.href="/login"
+            return
+        }
     if (res?.data?.data) {
       setTodos(res.data.data);
-    } else {
       setLoading(false);
     }
   };
@@ -64,13 +69,21 @@ const Todo = () => {
   }
   async function handleClick() {
     setResponse("");
+    setLoading(true)
     const res = await addTodo(data);
+    
     if (res?.data?.success === true) {
       toast.success(res.data.message);
       await getTodos();
     } else {
+        if(res?.data?.message==="JWT expired login again"){
+            window.location.href="/login"
+            return
+        }
       setResponse(res);
+
     }
+    setLoading(false)
     setData({
       title: "",
       description: "",
@@ -156,7 +169,7 @@ const Todo = () => {
           variant="contained"
           sx={{ minWidth: 100 }}
         >
-          Add
+          {loading?"adding...":"Add"}
         </Button>
       </Box>
       <Box

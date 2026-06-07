@@ -11,22 +11,37 @@ const Signup = () => {
   const adornmentId = React.useId();
   const textFieldId = React.useId();
   const sxId = React.useId();
-  
-  const [error,setError]=useState("")
-  const [response,setResponse]=useState(false)
-const navigate=useNavigate()
 
-const {formField,setFormField,fetchData,setUser,backError,setBackError}=useContext(userContext)!
-  async function handleSignup(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault()
-    if(formField.password!==formField.confirmPassword){
-        setError("Confirm Password does not matches")
+  const [error, setError] = useState("");
+  const [response, setResponse] = useState(false);
+  const navigate = useNavigate();
+
+  const {
+    formField,
+    setFormField,
+    fetchData,
+    setUser,
+    backError,
+    setBackError,
+  } = useContext(userContext)!;
+  async function handleSignup(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) {
+    e.preventDefault();
+    if (formField.password !== formField.confirmPassword) {
+      setError("Confirm Password does not matches");
     }
-    setError("")
-    let res=await fetchData(formField)
-    setResponse(res)
-    navigate("/login")
+    setError("");
+    let res = await fetchData(formField);
+    console.log("response", res);
+    setResponse(res?.data?.message);
+    if (res?.data?.success) {
+      navigate("/login");
+    } else {
+      setResponse(res?.data?.message);
+    }
   }
+  //   .data.message
   return (
     <Box
       sx={{
@@ -72,9 +87,7 @@ const {formField,setFormField,fetchData,setUser,backError,setBackError}=useConte
             flexDirection: "column",
           }}
         >
-            <Box sx={{color:"red"}}>
-                {response}
-            </Box>
+          <Box sx={{ color: "red" }}>{response}</Box>
           <Box sx={{ width: 500, maxWidth: "100%" }}>
             <TextField
               fullWidth
@@ -82,11 +95,9 @@ const {formField,setFormField,fetchData,setUser,backError,setBackError}=useConte
               id="fullWidth"
               required
               value={formField.name}
-              onChange={(e) =>{
-                setFormField({ ...formField, name: e.target.value.trim()})
-            
-              }
-              }
+              onChange={(e) => {
+                setFormField({ ...formField, name: e.target.value });
+              }}
             />
           </Box>
           <Box sx={{ width: 500, maxWidth: "100%" }}>
@@ -95,10 +106,9 @@ const {formField,setFormField,fetchData,setUser,backError,setBackError}=useConte
               label="Enter your Email"
               id="fullWidth"
               value={formField.email}
-              onChange={(e) =>{
-                setFormField({ ...formField, email: e.target.value })
-              }
-              }
+              onChange={(e) => {
+                setFormField({ ...formField, email: e.target.value });
+              }}
             />
           </Box>
           <Box sx={{ width: 500, maxWidth: "100%" }}>
@@ -107,10 +117,9 @@ const {formField,setFormField,fetchData,setUser,backError,setBackError}=useConte
               label="Enter password"
               id="fullWidth"
               value={formField.password}
-              onChange={(e) =>{
-                setFormField({ ...formField, password: e.target.value })
-              }
-              }
+              onChange={(e) => {
+                setFormField({ ...formField, password: e.target.value });
+              }}
             />
           </Box>
           <Box sx={{ width: 500, maxWidth: "100%" }}>
@@ -119,20 +128,21 @@ const {formField,setFormField,fetchData,setUser,backError,setBackError}=useConte
               label="Confirm the above password"
               id="fullWidth"
               value={formField.confirmPassword}
-              onChange={(e) =>{
-                setFormField({ ...formField, confirmPassword: e.target.value })
-              }
-              }
+              onChange={(e) => {
+                setFormField({ ...formField, confirmPassword: e.target.value });
+              }}
             />
           </Box>
-          <Box sx={{
+          <Box
+            sx={{
               width: 500,
               maxWidth: "100%",
               display: "flex",
               justifyContent: "space-between",
-            }}>
+            }}
+          >
             <NavLink to="/login">Already register ? Login here</NavLink>
-          <NavLink to="/verify">Resend Verification link</NavLink>
+            <NavLink to="/verify">Resend Verification link</NavLink>
           </Box>
 
           <Button
