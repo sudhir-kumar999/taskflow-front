@@ -30,6 +30,7 @@ const Signup = () => {
     e.preventDefault();
     if (formField.password !== formField.confirmPassword) {
       setError("Confirm Password does not matches");
+      return
     }
     setError("");
     let res = await fetchData(formField);
@@ -87,7 +88,7 @@ const Signup = () => {
             flexDirection: "column",
           }}
         >
-          <Box sx={{ color: "red" }}>{response}</Box>
+          <Box sx={{ color: "red" }}>{response}{error}</Box>
           <Box sx={{ width: 500, maxWidth: "100%" }}>
             <TextField
               fullWidth

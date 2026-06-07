@@ -80,7 +80,7 @@ const Todo = () => {
             window.location.href="/login"
             return
         }
-      setResponse(res);
+      setResponse(res?.data?.message);
 
     }
     setLoading(false)
