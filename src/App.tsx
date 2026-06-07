@@ -9,6 +9,7 @@ import VerifyEmail from "./components/VerifyEmail.tsx";
 import Todo from "./components/Todo.tsx";
 import PubLayout from "./components/PubLayout.tsx";
 import { ToastContainer, toast } from "react-toastify";
+import "./api2.ts"
 
 const App = () => {
   return (

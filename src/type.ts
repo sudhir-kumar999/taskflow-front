@@ -21,8 +21,8 @@ export type todo={
     title:string
     isPinned:boolean
     description:string
-    priority:priority
-    status:status
+    priority:string
+    status:string
     dueDate:string
     pinned?:boolean
 }
@@ -32,5 +32,11 @@ export type todoResponse={
     message:string
     data:todo[]
 }
+export type userdetails = {
+  name?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+};
 export type status="ACTIVE"|"COMPLETED"
 export type priority="LOW"|"MEDIUM"|"HIGH"

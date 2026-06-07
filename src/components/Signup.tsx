@@ -10,6 +10,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import Typography from "@mui/material/Typography";
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { toast } from "react-toastify";
+import { allAPICall } from "../api2.ts";
 
 const Signup = () => {
   const adornmentId = React.useId();
@@ -24,7 +25,6 @@ const Signup = () => {
   const {
     formField,
     setFormField,
-    fetchData,
   } = useContext(userContext)!;
   async function handleSignup(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -35,7 +35,7 @@ const Signup = () => {
       return
     }
     setError("");
-    let res = await fetchData(formField);
+    let res = await allAPICall("signup",formField);
     setResponse(res?.data?.message);
     if (res?.data?.success) {
       navigate("/login");
@@ -129,8 +129,6 @@ const Signup = () => {
                 setFormField({ ...formField, password: e.target.value });
               }}
             />
-            {/* <Typography variant="body1" component="span" sx={{position:"absolute",ml:-6, mt:2}} onClick={showPassword}>{showPass?<VisibilityOffIcon  sx={{}}/>:<VisibilityIcon />}</Typography> */}
-
           </Box>
           <Box sx={{ width: 500, maxWidth: "100%" }}>
             <TextField
@@ -167,7 +165,6 @@ const Signup = () => {
             Sign Up
           </Button>
         </Box>
-        {/* <Box component="section" sx={{ p: 2, border: "2px solid black" }}></Box> */}
       </Box>
     </Box>
   );

@@ -1,17 +1,15 @@
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import React, { useContext, useState } from "react";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Button from "@mui/material/Button";
 import { NavLink, useNavigate } from "react-router-dom";
 import LoginIcon from "@mui/icons-material/Login";
 import { userContext } from "../userContext/userContext.tsx";
 import Typography from "@mui/material/Typography";
-// import { fetchLogin } from "../api.ts";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { toast } from "react-toastify";
+import { allAPICall } from "../api2.ts";
 const Login = () => {
   const adornmentId = React.useId();
   const textFieldId = React.useId();
@@ -23,8 +21,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
-  const { fetchLogin } = useContext(userContext)!;
-  const { setUser, getUser, user } = useContext(userContext)!;
+  const { setUser } = useContext(userContext)!;
   const navigate = useNavigate();
 
   async function handleLogin(
@@ -32,9 +29,9 @@ const Login = () => {
   ) {
     e.preventDefault();
     setLoading(true);
-    const res = await fetchLogin(formField);
+    const res = await allAPICall("fetchLogin", formField);
     if (res?.data?.success) {
-      const userRes = await getUser();
+      const userRes = await allAPICall("getUser");
       toast.success("login successful");
       setUser(userRes?.data?.data);
       setLoading(false);
