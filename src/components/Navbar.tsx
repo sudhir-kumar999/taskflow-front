@@ -26,10 +26,11 @@ import LowPriorityIcon from "@mui/icons-material/LowPriority";
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 import DensityMediumIcon from "@mui/icons-material/DensityMedium";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { getUser, logout } from "../api.ts";
+// import { getUser, logout } from "../api.ts";
 import { userContext } from "../userContext/userContext.tsx";
 import { toast } from "react-toastify";
 import PublicNav from "./PublicNav.tsx";
+import { allAPICall } from "../api2.ts";
 const drawerWidth = 300;
 
 interface Props {
@@ -59,7 +60,7 @@ function Navbar(props: Props) {
   };
 
   const handleLogout = async () => {
-    const res = await logout();
+    const res = await allAPICall("logout");
     toast.success("logout successful");
     setUser(null);
     navigate("/login");

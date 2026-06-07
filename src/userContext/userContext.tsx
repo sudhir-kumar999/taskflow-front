@@ -1,6 +1,5 @@
 import React from "react";
 import { todo } from "../type.ts";
-// import Todo from '../components/Todo';
 type userdetails={
 name:string
 email:string
@@ -30,12 +29,7 @@ type contextType={
    setLoading:React.Dispatch<React.SetStateAction<boolean>>,
    setUser:React.Dispatch<React.SetStateAction<userres|null>>
    setFormField:React.Dispatch<React.SetStateAction<userdetails>>
-   fetchData:(formField:userdetails)=>Promise<any>
-   fetchLogin:(formField:login)=>Promise<any>
-   sendLink:(email:string)=>Promise<any>
-    getUser:()=>Promise<any>
-   backError:string,    
-   setBackError:React.Dispatch<React.SetStateAction<string>>
+
 }
 
 export const userContext=React.createContext<contextType|null>(null)

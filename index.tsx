@@ -3,6 +3,7 @@ import ReactDom from "react-dom/client";
 import App from "./src/App.tsx";
 // import * as css from "./index.css";
 import "./index.css";
+import "./src/api2.ts"
 import { BrowserRouter } from "react-router-dom";
 import UserProvider from "./src/userContext/userProvider";
 

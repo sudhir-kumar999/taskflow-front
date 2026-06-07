@@ -1,177 +1,137 @@
 import axios from "axios";
 import { useContext } from "react";
 import { userContext } from "./userContext/userContext.tsx";
-type userdetails = {
-  name?: string;
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-};
+import { todo, userdetails } from "./type.ts";
+
 
 const BASE_URL = process.env.BASE_URL!;
-export const getUser = async () => {
+
+
+const AxiosInstance = axios.create({
+  baseURL: BASE_URL,
+});
+AxiosInstance.interceptors.response.use((response)=>{
+    return response
+},
+async(error)=>{
+    if(error?.response?.data?.message=="JWT expired login again" || error?.response?.data?.message=="wrong token or token expired"|| error?.response?.data?.message=="no tokens found"){
+        window.location.href="/login"
+        return
+    }
+    return Promise.reject(error)
+}
+)
+
+
+
+export const allAPICall = async (type: string, data?: Partial<userdetails & todo>, p0?: { selectTodo: todo; "": any; }) => {
   try {
-    const res = await axios.get(`${BASE_URL}/api/auth/me`, {
-      withCredentials: true,
-    });
+    let res;
+    switch (type) {
+      case "getUser":
+        res = await axios.get(`${BASE_URL}/api/auth/me`, {
+          withCredentials: true,
+        });
+        break;
+
+      case "signup":
+        res = await AxiosInstance.post(`${BASE_URL}/user/data`, data, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        break;
+
+      case "fetchLogin":
+        res = await AxiosInstance.post(
+          `${BASE_URL}/user/login`,
+          data,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
+        break;
+
+      case "sendLink":
+        console.log(data);
+        res = await AxiosInstance.post(
+          `${BASE_URL}/api/resend/link`,
+          data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
+        break;
+
+      case "addTodo":
+        res = await AxiosInstance.post(`${BASE_URL}/todo/post-todo`, data, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        break;
+
+      case "fetchTodos":
+        res = await AxiosInstance.get(`${BASE_URL}/todo/get-todo`, {
+          withCredentials: true,
+        });
+        break;
+
+      case "fetchTodosByStatus":
+        res = await AxiosInstance.get(`${BASE_URL}/todo/filter-todo/${data?.status}`, {
+          withCredentials: true,
+        });
+        break;
+
+      case "fetchTodosByPriority":
+        res = await AxiosInstance.get(`${BASE_URL}/todo/filter-prior/${data?.priority}`, {
+          withCredentials: true,
+        });
+        break;
+
+      case "updateTodo":
+        res = await AxiosInstance.patch(`${BASE_URL}/todo/update-todo/${data?.id}`, data, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        break;
+
+      case "deleteTodo":
+        res = await AxiosInstance.delete(`${BASE_URL}/todo/delete-todo/${data?.id}`, {
+          withCredentials: true,
+        });
+        break;
+
+      case "logout":
+        res = await AxiosInstance.get(`${BASE_URL}/user/logout`, {
+          withCredentials: true,
+        });
+        break;
+
+      case "togglePin":
+        res = await AxiosInstance.patch(
+          `${BASE_URL}/todo/toggle-pin/${data?.id}`,
+          {},
+          {
+            withCredentials: true,
+          },
+        );
+        break;
+    }
+
     return res;
-  } catch (error: any) {
-    return error.response.data.message;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      return error?.response;
+    }
   }
 };
-
-export const fetchData = async (formField: userdetails) => {
-  try {
-    const res = await axios.post(`${BASE_URL}/user/data`, formField, {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return res;
-  } catch (error: any) {
-    return error.response;
-  }
-};
-
-export const fetchLogin = async (formField: userdetails): Promise<any> => {
-  try {
-    const res = await axios.post(`${BASE_URL}/user/login`, formField, {
-      withCredentials: true,
-
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return res;
-  } catch (error: any) {
-    return error.response;
-  }
-};
-
-export const sendLink = async (email: string) => {
-  try {
-    const res = await axios.post(
-      `${BASE_URL}/api/resend/link`,
-      { email },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-    return res.data.message;
-  } catch (error: any) {
-    return error.response.data.message;
-  }
-};
-
-export const fetchTodos = async () => {
-  try {
-    const res = await axios.get(`${BASE_URL}/todo/get-todo`, {
-      withCredentials: true,
-    });
-    return res;
-  } catch (error: any) {
-    return error.response.data.message;
-  }
-};
-
-export const fetchTodosByStatus = async (status: string) => {
-  try {
-    const res = await axios.get(`${BASE_URL}/todo/filter-todo/${status}`, {
-      withCredentials: true,
-    });
-    return res;
-  } catch (error: any) {
-    return error.response.data.message;
-  }
-};
-
-export const fetchTodosByPriority = async (priority: string) => {
-  try {
-    const res = await axios.get(`${BASE_URL}/todo/filter-prior/${priority}`, {
-      withCredentials: true,
-    });
-    return res;
-  } catch (error: any) {
-    return error.response.data.message;
-  }
-};
-
-type data = {
-  title: string;
-  description?: string;
-  priority?: string;
-  dueDate: string;
-};
-export const addTodo = async (todoData: data) => {
-  try {
-    const res = await axios.post(`${BASE_URL}/todo/post-todo`, todoData, {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return res;
-  } catch (error: any) {
-    return error.response;
-  }
-};
-
-export const updateTodo = async (taskId: string, data: any) => {
-  try {
-    const res = await axios.patch(
-      `${BASE_URL}/todo/update-todo/${taskId}`,
-      data,
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-    return res;
-  } catch (error: any) {
-    return error.response.data.message;
-  }
-};
-
-export const deleteTodo = async (taskId: string) => {
-  try {
-    const res = await axios.delete(`${BASE_URL}/todo/delete-todo/${taskId}`, {
-      withCredentials: true,
-    });
-    return res;
-  } catch (error: any) {
-    return error.response.data.message;
-  }
-};
-
-export const logout = async () => {
-  try {
-    const res = await axios.get(`${BASE_URL}/user/logout`, {
-      withCredentials: true,
-    });
-    return res;
-  } catch (error: any) {
-    return error.response.data.message;
-  }
-};
-
-export const togglePin = async (id: string) => {
-  try {
-    const res = await axios.patch(
-      `${BASE_URL}/todo/toggle-pin/${id}`,
-      {},
-      {
-        withCredentials: true,
-      },
-    );
-    return res;
-  } catch (error: any) {
-    return error.response;
-  }
-};
-
-

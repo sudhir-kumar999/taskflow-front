@@ -1,8 +1,7 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { userContext } from "./userContext.tsx";
-import { fetchLogin, getUser, sendLink } from "../api.ts";
-import { fetchData } from "../api.ts";
 import { todo } from "../type.ts";
+import { allAPICall } from "../api2.ts";
 
 export type child = {
   children: React.ReactNode;
@@ -35,7 +34,7 @@ const UserProvider = ({ children }: child) => {
   useEffect(() => {
     async function users() {
       try {
-        let res = await getUser();
+        let res = await allAPICall("getUser");
         console.log(res);
         if (res?.data?.data) {
           setUser(res.data.data);
@@ -55,14 +54,8 @@ const UserProvider = ({ children }: child) => {
         setUser,
         formField,
         setFormField,
-        fetchData,
-        backError,
-        setBackError,
-        fetchLogin,
-        sendLink,
         loading,
         setLoading,
-        getUser,
         selectTodo,
         setSelectTodo,
         open,

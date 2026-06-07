@@ -4,14 +4,6 @@ import TextField from "@mui/material/TextField";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { SelectChangeEvent } from "@mui/material/Select";
-import {
-  addTodo,
-  fetchTodos,
-  fetchTodosByPriority,
-  fetchTodosByStatus,
-  togglePin,
-  updateTodo,
-} from "../api.ts";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
@@ -26,6 +18,7 @@ import Typography from "@mui/material/Typography";
 import { todo } from "../type.ts";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import CircularProgress from "@mui/material/CircularProgress";
+import { allAPICall } from "../api2.ts";
 
 const Todo = () => {
   const { status, priority } = useParams();
@@ -48,12 +41,12 @@ const Todo = () => {
     if (status) {
       setLoading(true);
 
-      res = await fetchTodosByStatus(status);
+      res = await allAPICall("fetchTodosByStatus", { status });
       setLoading(false);
     } else if (priority) {
-      res = await fetchTodosByPriority(priority);
+      res = await allAPICall("fetchTodosByPriority", { priority });
     } else {
-      res = await fetchTodos();
+      res = await allAPICall("fetchTodos");
     }
     if (res?.data?.message === "JWT expired login again") {
       window.location.href = "/login";
@@ -78,21 +71,12 @@ const Todo = () => {
   async function handleClick() {
     setResponse("");
     setLoading(true);
-    const res = await addTodo(data);
+    const res = await allAPICall("addTodo", data);
 
     if (res?.data?.success === true) {
       toast.success(res.data.message);
       await getTodos();
     } else {
-      if (res?.data?.message === "JWT expired login again") {
-        window.location.href = "/login";
-        return;
-      }
-      if (res?.data?.message === "no tokens found") {
-        window.location.href = "/login";
-        return;
-      }
-
       setResponse(res?.data?.message);
     }
     setLoading(false);
@@ -110,7 +94,7 @@ const Todo = () => {
   };
 
   const handlePinMes = async (id: string) => {
-    const res = await togglePin(id);
+    const res = await allAPICall("togglePin", { id });
     if (res?.data?.success) {
       getTodos();
     }
@@ -186,7 +170,6 @@ const Todo = () => {
           variant="contained"
           sx={{ minWidth: 100 }}
         >
-          {/* {loading ? "adding..." : "Add"} */}
           ADD
         </Button>
       </Box>

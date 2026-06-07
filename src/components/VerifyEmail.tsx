@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 import LoginIcon from "@mui/icons-material/Login";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import { userContext } from "../userContext/userContext.tsx";
+import { allAPICall } from "../api2.ts";
 const VerifyEmail = () => {
   const adornmentId = React.useId();
   const textFieldId = React.useId();
@@ -16,14 +17,13 @@ const VerifyEmail = () => {
   const [response, setResponse] = useState("");
   const [iserror, setIsError] = useState(false);
 
-  const { sendLink } = useContext(userContext)!;
 
   async function handleSignup(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) {
     e.preventDefault();
-    const res = await sendLink(email);
-    setResponse(res);
+    const res = await allAPICall("sendLink",{email});
+    setResponse(res?.data?.message);
     setEmail("");
   }
   return (
