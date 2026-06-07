@@ -97,17 +97,6 @@ navigate("/login")
               <ListItemText primary="Filter By Status" />
             </ListItemButton>
           </ListItem>
-          {/* <ListItem  disablePadding>
-            <ListItemButton
-            component={NavLink}
-            to="/status/ALL"
-            >
-              <ListItemIcon>
-                <AppsIcon/>
-              </ListItemIcon>
-              <ListItemText primary="ALL" />
-            </ListItemButton>
-          </ListItem> */}
           <ListItem  disablePadding>
             <ListItemButton 
             component={NavLink}

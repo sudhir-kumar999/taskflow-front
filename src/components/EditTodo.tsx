@@ -14,6 +14,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { toast } from "react-toastify";
 import { priority, todo } from "../type.ts";
+import PushPinIcon from '@mui/icons-material/PushPin';
 type props={
     getTodos:()=>Promise<void>
 }
@@ -51,7 +52,7 @@ const EditTodo = ({ getTodos }:props) => {
     console.log("res data update", res);
     if (res?.data) {
       toast.success("todo updated successfully");
-      await fetchTodos();
+      await getTodos();
       setOpen(false);
     }
   };

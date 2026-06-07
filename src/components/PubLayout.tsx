@@ -17,15 +17,17 @@ if(user){
     return <Navigate to="/todos" replace/>
 }
   return (
-    <Box sx={{ display: "flex" ,minHeight:"100vh"}}>
+        //   ml: { md: "-300px" },
+    <Box sx={{ display: "flex" ,minHeight:"100vh",ml:{sm:"7vw",md:"2vw"}}}>
       <Navbar />
       <Box
         sx={{
         //   flexGrow: 1,
-        //   ml: { md: "-300px" },
-          width: { md: `calc(100%-300px)` },
+        //   ml: { md: "-50px" },
+          width: { md: `calc(100%)` },
           display:"flex",
           justifyContent:"center",
+        //   overflow:"hidden"
         }}
       >
       </Box>

@@ -58,8 +58,6 @@ interface Props {
     }
   };
 
-
-
   const drawer = (
     <div>
       <Toolbar />
@@ -128,8 +126,8 @@ interface Props {
       <AppBar
         position="fixed"
         sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
+          width: { md: `calc(100% - ${drawerWidth}px)` },
+          ml: { md: `${drawerWidth}px` },
         }}
       >
         <Toolbar>
@@ -138,7 +136,7 @@ interface Props {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ mr: 2, display: { md: 'none' } }}
           >
             <MenuIcon />
           </IconButton>
@@ -149,7 +147,7 @@ interface Props {
       </AppBar>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={{ width: { md: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
@@ -160,7 +158,7 @@ interface Props {
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
           sx={{
-            display: { xs: 'block', sm: 'none' },
+            display: { xs: 'block', md: 'none' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
           }}
           slotProps={{
@@ -174,7 +172,7 @@ interface Props {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', sm: 'block' },
+            display: { xs: 'none', md: 'block' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
           }}
           open

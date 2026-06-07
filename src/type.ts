@@ -19,6 +19,7 @@ export type login={
 export type todo={
     id:string
     title:string
+    isPinned:boolean
     description:string
     priority:priority
     status:status

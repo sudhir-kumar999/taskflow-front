@@ -24,8 +24,8 @@ import IconButton from "@mui/material/IconButton";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { todo } from "../type.ts";
-import { status } from "../type";
 import PushPinIcon from '@mui/icons-material/PushPin';
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Todo = () => {
   const { status, priority } = useParams();
@@ -46,7 +46,11 @@ const Todo = () => {
 
     let res;
     if (status) {
+    setLoading(true);
+
       res = await fetchTodosByStatus(status);
+    setLoading(false);
+
     } else if (priority) {
       res = await fetchTodosByPriority(priority);
     } else {
@@ -107,6 +111,8 @@ const Todo = () => {
       getTodos();
     }
   };
+console.log(todos)
+
 
   return (
     <Box
@@ -179,7 +185,8 @@ const Todo = () => {
           variant="contained"
           sx={{ minWidth: 100 }}
         >
-          {loading ? "adding..." : "Add"}
+          {/* {loading ? "adding..." : "Add"} */}
+          ADD
         </Button>
       </Box>
       <Box
@@ -196,7 +203,9 @@ const Todo = () => {
         }}
       >
         {todos.length == 0 ? (
-          <Box>No todo found</Box>
+          <Box sx={{ display: 'flex' ,justifyContent:"center",alignItems:"center",height:"100vh"}}>
+      <CircularProgress aria-label="Loading…" />
+    </Box>
         ) : (
           todos.map((ele: todo) => (
             <Card
@@ -212,7 +221,7 @@ const Todo = () => {
                   }
                 }}
               >
-                pin {ele.pinned}
+                {ele?.isPinned ?"pinned":<PushPinIcon/>}
               </IconButton>
               <CardContent>
                 <Typography variant="h6">Title : {ele.title}</Typography>
