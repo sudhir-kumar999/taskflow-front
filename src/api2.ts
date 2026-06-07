@@ -3,28 +3,44 @@ import { useContext } from "react";
 import { userContext } from "./userContext/userContext.tsx";
 import { todo, userdetails } from "./type.ts";
 
-
 const BASE_URL = process.env.BASE_URL!;
-
 
 const AxiosInstance = axios.create({
   baseURL: BASE_URL,
 });
-AxiosInstance.interceptors.response.use((response)=>{
-    return response
-},
-async(error)=>{
-    if(error?.response?.data?.message=="JWT expired login again" || error?.response?.data?.message=="wrong token or token expired"|| error?.response?.data?.message=="no tokens found"){
-        window.location.href="/login"
-        return
+AxiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    if (
+      error?.response?.data?.message == "wrong token or token expired" ||
+      error?.response?.data?.message == "no tokens found"
+    ) {
+      window.location.href = "/login";
+      return;
     }
-    return Promise.reject(error)
-}
-)
+    if (error?.response?.data?.message == "JWT expired login again") {
+      let res = await axios.post(
+        `${BASE_URL}/api/auth/new-token`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+      const originalRequest = error.config;
+      return await axios(originalRequest);
+      console.log(res);
+    }
+    return Promise.reject(error);
+  },
+);
 
-
-
-export const allAPICall = async (type: string, data?: Partial<userdetails & todo>, p0?: { selectTodo: todo; "": any; }) => {
+export const allAPICall = async (
+  type: string,
+  data?: Partial<userdetails & todo>,
+  p0?: { selectTodo: todo; "": any },
+) => {
   try {
     let res;
     switch (type) {
@@ -44,29 +60,21 @@ export const allAPICall = async (type: string, data?: Partial<userdetails & todo
         break;
 
       case "fetchLogin":
-        res = await AxiosInstance.post(
-          `${BASE_URL}/user/login`,
-          data,
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "application/json",
-            },
+        res = await AxiosInstance.post(`${BASE_URL}/user/login`, data, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+        });
         break;
 
       case "sendLink":
         console.log(data);
-        res = await AxiosInstance.post(
-          `${BASE_URL}/api/resend/link`,
-          data,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
+        res = await AxiosInstance.post(`${BASE_URL}/api/resend/link`, data, {
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+        });
         break;
 
       case "addTodo":
@@ -85,30 +93,43 @@ export const allAPICall = async (type: string, data?: Partial<userdetails & todo
         break;
 
       case "fetchTodosByStatus":
-        res = await AxiosInstance.get(`${BASE_URL}/todo/filter-todo/${data?.status}`, {
-          withCredentials: true,
-        });
+        res = await AxiosInstance.get(
+          `${BASE_URL}/todo/filter-todo/${data?.status}`,
+          {
+            withCredentials: true,
+          },
+        );
         break;
 
       case "fetchTodosByPriority":
-        res = await AxiosInstance.get(`${BASE_URL}/todo/filter-prior/${data?.priority}`, {
-          withCredentials: true,
-        });
+        res = await AxiosInstance.get(
+          `${BASE_URL}/todo/filter-prior/${data?.priority}`,
+          {
+            withCredentials: true,
+          },
+        );
         break;
 
       case "updateTodo":
-        res = await AxiosInstance.patch(`${BASE_URL}/todo/update-todo/${data?.id}`, data, {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
+        res = await AxiosInstance.patch(
+          `${BASE_URL}/todo/update-todo/${data?.id}`,
+          data,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
           },
-        });
+        );
         break;
 
       case "deleteTodo":
-        res = await AxiosInstance.delete(`${BASE_URL}/todo/delete-todo/${data?.id}`, {
-          withCredentials: true,
-        });
+        res = await AxiosInstance.delete(
+          `${BASE_URL}/todo/delete-todo/${data?.id}`,
+          {
+            withCredentials: true,
+          },
+        );
         break;
 
       case "logout":
