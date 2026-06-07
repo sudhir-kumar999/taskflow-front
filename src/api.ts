@@ -166,3 +166,14 @@ export const logout=async()=>{
         return error.response.data.message
     }
 }
+
+export const togglePin=async(id:string)=>{
+    try {
+        const res=await axios.patch(`${BASE_URL}/todo/toggle-pin/${id}`,{},{
+            withCredentials:true
+        })
+        return res
+    } catch (error:any) {
+        return error.response
+    }
+}

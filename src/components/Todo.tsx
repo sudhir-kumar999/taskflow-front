@@ -9,6 +9,7 @@ import {
   fetchTodos,
   fetchTodosByPriority,
   fetchTodosByStatus,
+  togglePin,
   updateTodo,
 } from "../api.ts";
 import FormControl from "@mui/material/FormControl";
@@ -23,7 +24,7 @@ import IconButton from "@mui/material/IconButton";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { todo } from "../type.ts";
-import { status } from '../type';
+import { status } from "../type";
 
 const Todo = () => {
   const { status, priority } = useParams();
@@ -38,7 +39,7 @@ const Todo = () => {
   const { open, setOpen, selectTodo, setSelectTodo, mainTodo, setMainTodo } =
     useContext(userContext)!;
   const [response, setResponse] = useState("");
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const getTodos = async () => {
     setLoading(true);
 
@@ -50,10 +51,10 @@ const Todo = () => {
     } else {
       res = await fetchTodos();
     }
-    if(res?.data?.message==="JWT expired login again"){
-            window.location.href="/login"
-            return
-        }
+    if (res?.data?.message === "JWT expired login again") {
+      window.location.href = "/login";
+      return;
+    }
     if (res?.data?.data) {
       setTodos(res.data.data);
       setLoading(false);
@@ -63,27 +64,29 @@ const Todo = () => {
     getTodos();
   }, [status, priority]);
   function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement, Element|SelectChangeEvent>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement,
+      Element | SelectChangeEvent
+    >,
   ) {
     setData({ ...data, [e.target.name]: e.target.value });
   }
   async function handleClick() {
     setResponse("");
-    setLoading(true)
+    setLoading(true);
     const res = await addTodo(data);
-    
+
     if (res?.data?.success === true) {
       toast.success(res.data.message);
       await getTodos();
     } else {
-        if(res?.data?.message==="JWT expired login again"){
-            window.location.href="/login"
-            return
-        }
+      if (res?.data?.message === "JWT expired login again") {
+        window.location.href = "/login";
+        return;
+      }
       setResponse(res?.data?.message);
-
     }
-    setLoading(false)
+    setLoading(false);
     setData({
       title: "",
       description: "",
@@ -95,6 +98,13 @@ const Todo = () => {
     setSelectTodo({ ...todos });
     setMainTodo({ ...todos });
     setOpen(true);
+  };
+
+  const handlePinMes = async (id: string) => {
+    const res = await togglePin(id);
+    if (res?.data?.success) {
+      getTodos();
+    }
   };
 
   return (
@@ -123,7 +133,6 @@ const Todo = () => {
           mx: "auto",
           mb: 3,
           flexDirection: "column",
-
         }}
       >
         <TextField
@@ -149,7 +158,7 @@ const Todo = () => {
             name="priority"
             value={data.priority}
             label="priority"
-            onChange={(e:SelectChangeEvent) => handleChange(e)}
+            onChange={(e: SelectChangeEvent) => handleChange(e)}
           >
             <MenuItem value="LOW">LOW</MenuItem>
             <MenuItem value="MEDIUM">MEDIUM</MenuItem>
@@ -169,7 +178,7 @@ const Todo = () => {
           variant="contained"
           sx={{ minWidth: 100 }}
         >
-          {loading?"adding...":"Add"}
+          {loading ? "adding..." : "Add"}
         </Button>
       </Box>
       <Box
@@ -180,7 +189,7 @@ const Todo = () => {
             sm: "repeat(1,1fr)",
             md: "repeat(2,1fr)",
             xl: "repeat(3,1fr)",
-            width:"100%",
+            width: "100%",
             gap: 2,
           },
         }}
@@ -194,7 +203,16 @@ const Todo = () => {
               sx={{ cursor: "pointer", position: "relative" }}
               onClick={() => handleTodoClick(ele)}
             >
-              <IconButton onClick={((e)=>{e.stopPropagation()})}>pin</IconButton>
+              <IconButton
+                onClick={(e) => {
+                  {
+                    e.stopPropagation()
+                    handlePinMes(ele.id)
+                  }
+                }}
+              >
+                pin {ele.pinned}
+              </IconButton>
               <CardContent>
                 <Typography variant="h6">Title : {ele.title}</Typography>
 
