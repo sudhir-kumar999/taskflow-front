@@ -14,11 +14,11 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { toast } from "react-toastify";
 import { priority, todo } from "../type.ts";
-import PushPinIcon from '@mui/icons-material/PushPin';
-type props={
-    getTodos:()=>Promise<void>
-}
-const EditTodo = ({ getTodos }:props) => {
+import PushPinIcon from "@mui/icons-material/PushPin";
+type props = {
+  getTodos: () => Promise<void>;
+};
+const EditTodo = ({ getTodos }: props) => {
   const { selectTodo, setSelectTodo, mainTodo, open, setOpen } =
     useContext(userContext)!;
 
@@ -29,19 +29,6 @@ const EditTodo = ({ getTodos }:props) => {
     if (!mainTodo) {
       return;
     }
-    const updateData: Partial<todo> = {};
-    if (selectTodo.title != mainTodo.title) {
-      updateData.title = selectTodo.title;
-    }
-    if (selectTodo.description != mainTodo.description) {
-      updateData.description = selectTodo.description;
-    }
-    if (selectTodo.priority != mainTodo.priority) {
-      updateData.priority = selectTodo.priority;
-    }
-    if (selectTodo.status != mainTodo.status) {
-      updateData.status = selectTodo.status;
-    }
     const res = await updateTodo(selectTodo.id, {
       title: selectTodo.title,
       description: selectTodo.description,
@@ -49,7 +36,6 @@ const EditTodo = ({ getTodos }:props) => {
       status: selectTodo.status,
       dueDate: selectTodo.dueDate,
     });
-    console.log("res data update", res);
     if (res?.data) {
       toast.success("todo updated successfully");
       await getTodos();
@@ -63,7 +49,6 @@ const EditTodo = ({ getTodos }:props) => {
     if (res?.data?.success) {
       toast.success(res.data.message);
       await getTodos();
-
       setOpen(false);
     }
   };
@@ -76,19 +61,19 @@ const EditTodo = ({ getTodos }:props) => {
         <TextField
           label="title"
           value={selectTodo?.title || ""}
-          onChange={(e) =>{
-    if (!selectTodo) return null;
-            setSelectTodo({ ...selectTodo, title: e.target.value })}
-          }
+          onChange={(e) => {
+            if (!selectTodo) return null;
+            setSelectTodo({ ...selectTodo, title: e.target.value });
+          }}
         />
 
         <TextField
           label="description"
           value={selectTodo?.description || ""}
-          onChange={(e) =>{
-    if (!selectTodo) return null;
-            setSelectTodo({ ...selectTodo, description: e.target.value })}
-          }
+          onChange={(e) => {
+            if (!selectTodo) return null;
+            setSelectTodo({ ...selectTodo, description: e.target.value });
+          }}
         />
         <FormControl>
           <InputLabel>Status</InputLabel>
@@ -96,10 +81,10 @@ const EditTodo = ({ getTodos }:props) => {
             name="status"
             value={selectTodo?.status || "ACTIVE"}
             label="status"
-            onChange={(e) =>{
-    if (!selectTodo) return null;
-              setSelectTodo({ ...selectTodo, status: e.target.value })}
-            }
+            onChange={(e) => {
+              if (!selectTodo) return null;
+              setSelectTodo({ ...selectTodo, status: e.target.value });
+            }}
           >
             <MenuItem value="ACTIVE">ACTIVE</MenuItem>
             <MenuItem value="COMPLETED">COMPLETED</MenuItem>
@@ -112,10 +97,10 @@ const EditTodo = ({ getTodos }:props) => {
             name="priority"
             value={selectTodo?.priority || "LOW"}
             label="status"
-            onChange={(e) =>{
-                if (!selectTodo) return null;
-              setSelectTodo({ ...selectTodo, priority: e.target.value })}
-            }
+            onChange={(e) => {
+              if (!selectTodo) return null;
+              setSelectTodo({ ...selectTodo, priority: e.target.value });
+            }}
           >
             <MenuItem value="LOW">LOW</MenuItem>
             <MenuItem value="MEDIUM">MEDIUM</MenuItem>

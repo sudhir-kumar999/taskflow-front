@@ -6,8 +6,6 @@ import Button from "@mui/material/Button";
 import { userContext } from "../userContext/userContext.tsx";
 
 const Home = () => {
-  const login =useContext(userContext)
-  console.log(login)
   return (
     <Box
       sx={{
@@ -16,8 +14,6 @@ const Home = () => {
         p: 2,
         display: "flex",
         flexDirection: "column",
-        // alignItems:"center",
-        // width:"100%"
       }}
     >
       home page

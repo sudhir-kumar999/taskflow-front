@@ -4,29 +4,37 @@ import { Navigate, Outlet } from "react-router-dom";
 import Footer from "./Footer.tsx";
 import Box from "@mui/material/Box";
 import { userContext } from "../userContext/userContext.tsx";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 const MainLayout = () => {
-    const {user,loading}=useContext(userContext)!
-     if(loading){
-        return <Box sx={{ display: 'flex' ,justifyContent:"center",alignItems:"center",height:"100vh"}}>
-      <CircularProgress aria-label="Loading…" />
-    </Box>
-    }
-    if(!user){
-        return <Navigate to="/login" replace />
-    }
-   
+  const { user, loading } = useContext(userContext)!;
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress aria-label="Loading…" />
+      </Box>
+    );
+  }
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
-    <Box sx={{ display: "flex" ,minHeight:"100vh"}}>
+    <Box sx={{ display: "flex", minHeight: "100vh" }}>
       <Navbar />
       <Box
         sx={{
           flexGrow: 1,
           ml: { md: "300px" },
           width: { md: `calc(100%-300px)` },
-          display:"flex",
-          justifyContent:"center",
+          display: "flex",
+          justifyContent: "center",
         }}
       >
         <Outlet />

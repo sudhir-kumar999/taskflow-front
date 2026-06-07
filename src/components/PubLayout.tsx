@@ -18,13 +18,13 @@ if(user){
 }
   return (
         //   ml: { md: "-300px" },
-    <Box sx={{ display: "flex" ,minHeight:"100vh",ml:{sm:"7vw",md:"2vw"}}}>
+    <Box sx={{ display: "flex" ,minHeight:"100vh",ml:{xs:"7vw",sm:"7vw",md:"2vw"}}}>
       <Navbar />
       <Box
         sx={{
         //   flexGrow: 1,
-        //   ml: { md: "-50px" },
-          width: { md: `calc(100%)` },
+          ml: { md: "-10vw" },
+        //   width: { md: `calc(100%)` },
           display:"flex",
           justifyContent:"center",
         //   overflow:"hidden"

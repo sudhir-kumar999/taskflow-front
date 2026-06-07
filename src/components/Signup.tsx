@@ -9,6 +9,7 @@ import { userContext } from "../userContext/userContext.tsx";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Typography from "@mui/material/Typography";
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const adornmentId = React.useId();
@@ -24,9 +25,6 @@ const Signup = () => {
     formField,
     setFormField,
     fetchData,
-    setUser,
-    backError,
-    setBackError,
   } = useContext(userContext)!;
   async function handleSignup(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -38,10 +36,11 @@ const Signup = () => {
     }
     setError("");
     let res = await fetchData(formField);
-    console.log("response", res);
     setResponse(res?.data?.message);
     if (res?.data?.success) {
       navigate("/login");
+            toast.success("signup successful")
+      
     } else {
       setResponse(res?.data?.message);
     }

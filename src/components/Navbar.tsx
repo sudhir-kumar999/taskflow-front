@@ -1,48 +1,47 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import { NavLink, useNavigate } from 'react-router-dom';
-import ChecklistIcon from '@mui/icons-material/Checklist';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import AppsIcon from '@mui/icons-material/Apps';
-import PendingActionsIcon from '@mui/icons-material/PendingActions';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
-import LowPriorityIcon from '@mui/icons-material/LowPriority';
-import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import DensityMediumIcon from '@mui/icons-material/DensityMedium';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { getUser, logout } from '../api.ts';
-import { userContext } from '../userContext/userContext.tsx';
-import { toast } from 'react-toastify';
-import PublicNav from './PublicNav.tsx';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import MailIcon from "@mui/icons-material/Mail";
+import MenuIcon from "@mui/icons-material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { NavLink, useNavigate } from "react-router-dom";
+import ChecklistIcon from "@mui/icons-material/Checklist";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import AppsIcon from "@mui/icons-material/Apps";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import LowPriorityIcon from "@mui/icons-material/LowPriority";
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
+import DensityMediumIcon from "@mui/icons-material/DensityMedium";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { getUser, logout } from "../api.ts";
+import { userContext } from "../userContext/userContext.tsx";
+import { toast } from "react-toastify";
+import PublicNav from "./PublicNav.tsx";
 const drawerWidth = 300;
 
 interface Props {
-
   window?: () => Window;
 }
 
- function Navbar(props: Props) {
+function Navbar(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
-  const navigate=useNavigate()
-  const {setUser,user}=React.useContext(userContext)!
+  const navigate = useNavigate();
+  const { setUser, user } = React.useContext(userContext)!;
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -59,16 +58,14 @@ interface Props {
     }
   };
 
-  const handleLogout=async()=>{
-    const res=await logout()
-    toast.success("logout successful")
-setUser(null)
-    console.log(res)
-navigate("/login")
-    // if(res?.data)
-  }
-  if(!user){
-    return <PublicNav/>
+  const handleLogout = async () => {
+    const res = await logout();
+    toast.success("logout successful");
+    setUser(null);
+    navigate("/login");
+  };
+  if (!user) {
+    return <PublicNav />;
   }
 
   const drawer = (
@@ -76,114 +73,94 @@ navigate("/login")
       <Toolbar />
       <Divider />
       <List>
-          <ListItem  disablePadding>
-            <ListItemButton
-            component={NavLink}
-            to="/todos"
-            >
-              <ListItemIcon>
-                <ChecklistIcon/>
-              </ListItemIcon>
-              <ListItemText primary="All Todo" />
-            </ListItemButton>
-          </ListItem>
-      <Divider />
+        <ListItem disablePadding>
+          <ListItemButton component={NavLink} to="/todos">
+            <ListItemIcon>
+              <ChecklistIcon />
+            </ListItemIcon>
+            <ListItemText primary="All Todo" />
+          </ListItemButton>
+        </ListItem>
+        <Divider />
 
-          <ListItem  disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <FilterAltIcon/>
-              </ListItemIcon>
-              <ListItemText primary="Filter By Status" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem  disablePadding>
-            <ListItemButton 
-            component={NavLink}
-            to="/todos/status/ACTIVE"
-            >
-              <ListItemIcon>
-                <PendingActionsIcon/>
-              </ListItemIcon>
-              <ListItemText primary="ACTIVE" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem  disablePadding>
-            <ListItemButton 
-            component={NavLink}
-            to="/todos/status/COMPLETED"
-            >
-              <ListItemIcon>
-                <DoneAllIcon/>
-              </ListItemIcon>
-              <ListItemText primary="COMPLETED" />
-            </ListItemButton>
-          </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <FilterAltIcon />
+            </ListItemIcon>
+            <ListItemText primary="Filter By Status" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={NavLink} to="/todos/status/ACTIVE">
+            <ListItemIcon>
+              <PendingActionsIcon />
+            </ListItemIcon>
+            <ListItemText primary="ACTIVE" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={NavLink} to="/todos/status/COMPLETED">
+            <ListItemIcon>
+              <DoneAllIcon />
+            </ListItemIcon>
+            <ListItemText primary="COMPLETED" />
+          </ListItemButton>
+        </ListItem>
         {/* ))} */}
       </List>
       <Divider />
       <List>
-        <ListItem  disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <PriorityHighIcon/>
-              </ListItemIcon>
-              <ListItemText primary="Filter By Priority" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem  disablePadding>
-            <ListItemButton
-            component={NavLink}
-            to="/todos/priority/LOW"
-            >
-              <ListItemIcon>
-                <LowPriorityIcon/>
-              </ListItemIcon>
-              <ListItemText primary="LOW" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem  disablePadding>
-            <ListItemButton
-            component={NavLink}
-            to="/todos/priority/MEDIUM"
-            >
-              <ListItemIcon>
-                <DensityMediumIcon/>
-              </ListItemIcon>
-              <ListItemText primary="MEDIUM" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem  disablePadding>
-            <ListItemButton
-            component={NavLink}
-            to="/todos/priority/HIGH"
-            >
-              <ListItemIcon>
-                <KeyboardDoubleArrowUpIcon/>
-              </ListItemIcon>
-              <ListItemText primary="HIGH" />
-            </ListItemButton>
-          </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <PriorityHighIcon />
+            </ListItemIcon>
+            <ListItemText primary="Filter By Priority" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={NavLink} to="/todos/priority/LOW">
+            <ListItemIcon>
+              <LowPriorityIcon />
+            </ListItemIcon>
+            <ListItemText primary="LOW" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={NavLink} to="/todos/priority/MEDIUM">
+            <ListItemIcon>
+              <DensityMediumIcon />
+            </ListItemIcon>
+            <ListItemText primary="MEDIUM" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={NavLink} to="/todos/priority/HIGH">
+            <ListItemIcon>
+              <KeyboardDoubleArrowUpIcon />
+            </ListItemIcon>
+            <ListItemText primary="HIGH" />
+          </ListItemButton>
+        </ListItem>
       </List>
-      <ListItem sx={{position:"absolute",bottom:"10px"}} disablePadding>
-            <ListItemButton
-            component={NavLink}
-            to="/todos/priority/HIGH"
-            >
-              <ListItemIcon>
-                <LogoutIcon/>
-              </ListItemIcon>
-              <ListItemText primary="Logout" onClick={handleLogout}/>
-            </ListItemButton>
-          </ListItem>
+      <ListItem sx={{ position: "absolute", bottom: "10px" }} disablePadding>
+        <ListItemButton component={NavLink} to="/todos/priority/HIGH">
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText primary="Logout" onClick={handleLogout} />
+        </ListItemButton>
+      </ListItem>
     </div>
   );
 
   // Remove this const when copying and pasting into your project.
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -198,7 +175,7 @@ navigate("/login")
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ mr: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
@@ -220,8 +197,11 @@ navigate("/login")
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
           sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
           slotProps={{
             root: {
@@ -234,8 +214,11 @@ navigate("/login")
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: "none", sm: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
           open
         >
@@ -279,5 +262,4 @@ navigate("/login")
   );
 }
 
-
-export default Navbar
+export default Navbar;

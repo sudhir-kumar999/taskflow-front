@@ -24,7 +24,7 @@ import IconButton from "@mui/material/IconButton";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { todo } from "../type.ts";
-import PushPinIcon from '@mui/icons-material/PushPin';
+import PushPinIcon from "@mui/icons-material/PushPin";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const Todo = () => {
@@ -46,11 +46,10 @@ const Todo = () => {
 
     let res;
     if (status) {
-    setLoading(true);
+      setLoading(true);
 
       res = await fetchTodosByStatus(status);
-    setLoading(false);
-
+      setLoading(false);
     } else if (priority) {
       res = await fetchTodosByPriority(priority);
     } else {
@@ -89,6 +88,11 @@ const Todo = () => {
         window.location.href = "/login";
         return;
       }
+      if (res?.data?.message === "no tokens found") {
+        window.location.href = "/login";
+        return;
+      }
+
       setResponse(res?.data?.message);
     }
     setLoading(false);
@@ -111,9 +115,6 @@ const Todo = () => {
       getTodos();
     }
   };
-console.log(todos)
-
-
   return (
     <Box
       sx={{
@@ -203,9 +204,16 @@ console.log(todos)
         }}
       >
         {todos.length == 0 ? (
-          <Box sx={{ display: 'flex' ,justifyContent:"center",alignItems:"center",height:"100vh"}}>
-      <CircularProgress aria-label="Loading…" />
-    </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <CircularProgress aria-label="Loading…" />
+          </Box>
         ) : (
           todos.map((ele: todo) => (
             <Card
@@ -216,12 +224,12 @@ console.log(todos)
               <IconButton
                 onClick={(e) => {
                   {
-                    e.stopPropagation()
-                    handlePinMes(ele.id)
+                    e.stopPropagation();
+                    handlePinMes(ele.id);
                   }
                 }}
               >
-                {ele?.isPinned ?"pinned":<PushPinIcon/>}
+                {ele?.isPinned ? "pinned" : <PushPinIcon />}
               </IconButton>
               <CardContent>
                 <Typography variant="h6">Title : {ele.title}</Typography>

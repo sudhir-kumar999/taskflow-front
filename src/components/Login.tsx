@@ -9,8 +9,9 @@ import LoginIcon from "@mui/icons-material/Login";
 import { userContext } from "../userContext/userContext.tsx";
 import Typography from "@mui/material/Typography";
 // import { fetchLogin } from "../api.ts";
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { toast } from "react-toastify";
 const Login = () => {
   const adornmentId = React.useId();
   const textFieldId = React.useId();
@@ -20,37 +21,31 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState("");
-  const [loading,setLoading]=useState(false)
-    const [showPass,setShowPass]=useState(false)
+  const [loading, setLoading] = useState(false);
+  const [showPass, setShowPass] = useState(false);
   const { fetchLogin } = useContext(userContext)!;
-  const { setUser, getUser,user } = useContext(userContext)!;
+  const { setUser, getUser, user } = useContext(userContext)!;
   const navigate = useNavigate();
 
   async function handleLogin(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
     const res = await fetchLogin(formField);
-console.log("res",res)
     if (res?.data?.success) {
       const userRes = await getUser();
-        setUser(userRes?.data?.data);
-      setLoading(false)
+      toast.success("login successful");
+      setUser(userRes?.data?.data);
+      setLoading(false);
       navigate("/");
-    }else{
-        // if(!user){
-        //     // await getUser();
-        //     navigate("/login")
-        //     return
-        // }
-        setError(res?.data?.message)
-        setLoading(false)
+    } else {
+      setError(res?.data?.message);
+      setLoading(false);
     }
-
   }
-  function showPassword(){
-    setShowPass(!showPass)
+  function showPassword() {
+    setShowPass(!showPass);
   }
   return (
     <Box
@@ -115,14 +110,20 @@ console.log("res",res)
               fullWidth
               label="Enter password"
               id="fullWidth"
-              type={showPass?"text":"password"}
+              type={showPass ? "text" : "password"}
               value={formField.password}
               onChange={(e) => {
                 setFormField({ ...formField, password: e.target.value });
               }}
             />
-            <Typography variant="body1" component="span" sx={{position:"absolute",ml:-6, mt:2}} onClick={showPassword}>{showPass?<VisibilityOffIcon  sx={{}}/>:<VisibilityIcon />}</Typography>
-
+            <Typography
+              variant="body1"
+              component="span"
+              sx={{ position: "absolute", ml: -6, mt: 2 }}
+              onClick={showPassword}
+            >
+              {showPass ? <VisibilityOffIcon sx={{}} /> : <VisibilityIcon />}
+            </Typography>
           </Box>
           <Box
             sx={{
@@ -142,7 +143,7 @@ console.log("res",res)
             type="submit"
             size="large"
           >
-            {loading?"loading...":"Log in"}
+            {loading ? "loading..." : "Log in"}
           </Button>
         </Box>
       </Box>
