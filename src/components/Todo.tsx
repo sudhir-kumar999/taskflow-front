@@ -25,6 +25,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { todo } from "../type.ts";
 import { status } from "../type";
+import PushPinIcon from '@mui/icons-material/PushPin';
 
 const Todo = () => {
   const { status, priority } = useParams();

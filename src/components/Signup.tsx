@@ -6,6 +6,9 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Button from "@mui/material/Button";
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { userContext } from "../userContext/userContext.tsx";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import Typography from "@mui/material/Typography";
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Signup = () => {
   const adornmentId = React.useId();
@@ -15,6 +18,7 @@ const Signup = () => {
   const [error, setError] = useState("");
   const [response, setResponse] = useState(false);
   const navigate = useNavigate();
+  const [showPass,setShowPass]=useState(false)
 
   const {
     formField,
@@ -42,7 +46,9 @@ const Signup = () => {
       setResponse(res?.data?.message);
     }
   }
-  //   .data.message
+  function showPassword(){
+    setShowPass(!showPass)
+  }
   return (
     <Box
       sx={{
@@ -116,23 +122,30 @@ const Signup = () => {
             <TextField
               fullWidth
               label="Enter password"
+              type={showPass?"text":"password"}
+
               id="fullWidth"
               value={formField.password}
               onChange={(e) => {
                 setFormField({ ...formField, password: e.target.value });
               }}
             />
+            {/* <Typography variant="body1" component="span" sx={{position:"absolute",ml:-6, mt:2}} onClick={showPassword}>{showPass?<VisibilityOffIcon  sx={{}}/>:<VisibilityIcon />}</Typography> */}
+
           </Box>
           <Box sx={{ width: 500, maxWidth: "100%" }}>
             <TextField
               fullWidth
               label="Confirm the above password"
               id="fullWidth"
+              type={showPass?"text":"password"}
               value={formField.confirmPassword}
               onChange={(e) => {
                 setFormField({ ...formField, confirmPassword: e.target.value });
               }}
             />
+            <Typography variant="body1" component="span" sx={{position:"absolute",ml:-6, mt:2}} onClick={showPassword}>{showPass?<VisibilityOffIcon  sx={{}}/>:<VisibilityIcon />}</Typography>
+              
           </Box>
           <Box
             sx={{

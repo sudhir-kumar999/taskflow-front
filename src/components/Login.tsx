@@ -7,7 +7,10 @@ import Button from "@mui/material/Button";
 import { NavLink, useNavigate } from "react-router-dom";
 import LoginIcon from "@mui/icons-material/Login";
 import { userContext } from "../userContext/userContext.tsx";
+import Typography from "@mui/material/Typography";
 // import { fetchLogin } from "../api.ts";
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 const Login = () => {
   const adornmentId = React.useId();
   const textFieldId = React.useId();
@@ -18,6 +21,7 @@ const Login = () => {
   });
   const [error, setError] = useState("");
   const [loading,setLoading]=useState(false)
+    const [showPass,setShowPass]=useState(false)
   const { fetchLogin } = useContext(userContext)!;
   const { setUser, getUser,user } = useContext(userContext)!;
   const navigate = useNavigate();
@@ -44,6 +48,9 @@ console.log("res",res)
         setLoading(false)
     }
 
+  }
+  function showPassword(){
+    setShowPass(!showPass)
   }
   return (
     <Box
@@ -108,11 +115,14 @@ console.log("res",res)
               fullWidth
               label="Enter password"
               id="fullWidth"
+              type={showPass?"text":"password"}
               value={formField.password}
               onChange={(e) => {
                 setFormField({ ...formField, password: e.target.value });
               }}
             />
+            <Typography variant="body1" component="span" sx={{position:"absolute",ml:-6, mt:2}} onClick={showPassword}>{showPass?<VisibilityOffIcon  sx={{}}/>:<VisibilityIcon />}</Typography>
+
           </Box>
           <Box
             sx={{
