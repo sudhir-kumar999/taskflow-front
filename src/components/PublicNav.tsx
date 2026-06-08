@@ -20,8 +20,6 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 
-import { userContext } from "../userContext/userContext.tsx";
-import { toast } from "react-toastify";
 const drawerWidth = 300;
 interface Props {
   window?: () => Window;
@@ -30,24 +28,18 @@ function PublicNav(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
-  const navigate = useNavigate();
-  const { setUser, user } = React.useContext(userContext)!;
-
   const handleDrawerClose = () => {
     setIsClosing(true);
     setMobileOpen(false);
   };
-
   const handleDrawerTransitionEnd = () => {
     setIsClosing(false);
   };
-
   const handleDrawerToggle = () => {
     if (!isClosing) {
       setMobileOpen(!mobileOpen);
     }
   };
-
   const drawer = (
     <div>
       <Toolbar />
@@ -70,9 +62,8 @@ function PublicNav(props: Props) {
             <ListItemText primary="sign up" />
           </ListItemButton>
         </ListItem>
-
         <ListItem disablePadding>
-          <ListItemButton component={NavLink} to="/signup">
+          <ListItemButton component={NavLink} to="/login">
             <ListItemIcon>
               <PendingActionsIcon />
             </ListItemIcon>
@@ -80,23 +71,19 @@ function PublicNav(props: Props) {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={NavLink} to="/login">
+          <ListItemButton component={NavLink} to="/verify">
             <ListItemIcon>
               <DoneAllIcon />
             </ListItemIcon>
             <ListItemText primary="Send Verification Link" />
           </ListItemButton>
         </ListItem>
-        {/* ))} */}
       </List>
       <Divider />
     </div>
   );
-
-  // Remove this const when copying and pasting into your project.
   const container =
     window !== undefined ? () => window().document.body : undefined;
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -127,7 +114,6 @@ function PublicNav(props: Props) {
         sx={{ width: { md: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"
@@ -143,7 +129,7 @@ function PublicNav(props: Props) {
           }}
           slotProps={{
             root: {
-              keepMounted: true, // Better open performance on mobile.
+              keepMounted: true,
             },
           }}
         >

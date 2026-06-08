@@ -30,7 +30,6 @@ AxiosInstance.interceptors.response.use(
       );
       const originalRequest = error.config;
       return await axios(originalRequest);
-      console.log(res);
     }
     return Promise.reject(error);
   },
@@ -69,7 +68,6 @@ export const allAPICall = async (
         break;
 
       case "sendLink":
-        console.log(data);
         res = await AxiosInstance.post(`${BASE_URL}/api/resend/link`, data, {
           headers: {
             "Content-Type": "application/json",

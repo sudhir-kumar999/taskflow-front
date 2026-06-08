@@ -9,7 +9,8 @@ import VerifyEmail from "./components/VerifyEmail.tsx";
 import Todo from "./components/Todo.tsx";
 import PubLayout from "./components/PubLayout.tsx";
 import { ToastContainer, toast } from "react-toastify";
-import "./api2.ts"
+import "./api2.ts";
+import NotFound from "./components/NotFound.tsx";
 
 const App = () => {
   return (
@@ -19,7 +20,10 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/verify" element={<VerifyEmail />} />
+          <Route path="*" element={<NotFound />} />
+
         </Route>
+
       </Routes>
       <Routes>
         <Route element={<MainLayout />}>
@@ -29,6 +33,8 @@ const App = () => {
           <Route path="/todos/priority/:priority" element={<Todo />} />
         </Route>
       </Routes>
+
+
       <ToastContainer />
     </>
   );

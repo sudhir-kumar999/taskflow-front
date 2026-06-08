@@ -35,7 +35,7 @@ const Login = () => {
       toast.success("login successful");
       setUser(userRes?.data?.data);
       setLoading(false);
-      navigate("/");
+      navigate("/todos");
     } else {
       setError(res?.data?.message);
       setLoading(false);

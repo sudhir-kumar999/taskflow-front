@@ -15,14 +15,12 @@ const VerifyEmail = () => {
   const sxId = React.useId();
   const [email, setEmail] = useState("");
   const [response, setResponse] = useState("");
-  const [iserror, setIsError] = useState(false);
-
 
   async function handleSignup(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) {
     e.preventDefault();
-    const res = await allAPICall("sendLink",{email});
+    const res = await allAPICall("sendLink", { email });
     setResponse(res?.data?.message);
     setEmail("");
   }
@@ -106,7 +104,6 @@ const VerifyEmail = () => {
             Send Link
           </Button>
         </Box>
-        {/* <Box component="section" sx={{ p: 2, border: "2px solid black" }}></Box> */}
       </Box>
     </Box>
   );

@@ -19,6 +19,7 @@ import { todo } from "../type.ts";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import CircularProgress from "@mui/material/CircularProgress";
 import { allAPICall } from "../api2.ts";
+import { RiUnpinFill } from "react-icons/ri";
 
 const Todo = () => {
   const { status, priority } = useParams();
@@ -30,17 +31,14 @@ const Todo = () => {
     dueDate: "",
   });
   const [loading, setLoading] = useState(false);
-  const { open, setOpen, selectTodo, setSelectTodo, mainTodo, setMainTodo } =
+  const { open, setOpen, setSelectTodo, setMainTodo } =
     useContext(userContext)!;
   const [response, setResponse] = useState("");
-  const navigate = useNavigate();
   const getTodos = async () => {
     setLoading(true);
-
     let res;
     if (status) {
       setLoading(true);
-
       res = await allAPICall("fetchTodosByStatus", { status });
       setLoading(false);
     } else if (priority) {
@@ -48,10 +46,10 @@ const Todo = () => {
     } else {
       res = await allAPICall("fetchTodos");
     }
-    if (res?.data?.message === "JWT expired login again") {
-      window.location.href = "/login";
-      return;
-    }
+    // if (res?.data?.message === "JWT expired login again") {
+    //   window.location.href = "/login";
+    //   return;
+    // }
     if (res?.data?.data) {
       setTodos(res.data.data);
       setLoading(false);
@@ -92,7 +90,6 @@ const Todo = () => {
     setMainTodo({ ...todos });
     setOpen(true);
   };
-
   const handlePinMes = async (id: string) => {
     const res = await allAPICall("togglePin", { id });
     if (res?.data?.success) {
@@ -135,17 +132,16 @@ const Todo = () => {
           placeholder="Enter Tasks to Add"
           size="medium"
         />
-
         <TextField
           fullWidth
           name="description"
           value={data.description}
           onChange={(e) => handleChange(e)}
-          placeholder="Enter Tasks to Add"
+          placeholder="Enter description Optional"
           size="medium"
         />
         <FormControl>
-          <InputLabel>Priority</InputLabel>
+          <InputLabel>Select Priority</InputLabel>
           <Select
             name="priority"
             value={data.priority}
@@ -157,7 +153,6 @@ const Todo = () => {
             <MenuItem value="HIGH">HIGH</MenuItem>
           </Select>
         </FormControl>
-
         <TextField
           name="dueDate"
           type="date"
@@ -212,22 +207,19 @@ const Todo = () => {
                   }
                 }}
               >
-                {ele?.isPinned ? "pinned" : <PushPinIcon />}
+                {ele?.isPinned ? <RiUnpinFill /> : <PushPinIcon />}
               </IconButton>
               <CardContent>
                 <Typography variant="h6">Title : {ele.title}</Typography>
-
                 <Typography variant="body2">
                   Description : {ele.description || "no description"}
                 </Typography>
-
                 <Typography variant="body2">
                   Priority : {ele.priority}
                 </Typography>
                 <Typography variant="body2">Status : {ele.status}</Typography>
                 <Typography variant="body2">DueDate: {ele.dueDate}</Typography>
               </CardContent>
-              {/* <p>{ele.title}</p> */}
             </Card>
           ))
         )}

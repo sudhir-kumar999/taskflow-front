@@ -35,7 +35,6 @@ const UserProvider = ({ children }: child) => {
     async function users() {
       try {
         let res = await allAPICall("getUser");
-        console.log(res);
         if (res?.data?.data) {
           setUser(res.data.data);
         }
