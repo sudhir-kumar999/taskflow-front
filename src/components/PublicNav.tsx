@@ -46,14 +46,16 @@ function PublicNav(props: Props) {
       <Divider />
       <List>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton sx={{ 
+                      cursor: 'default !important', 
+                    }}>
             <ListItemIcon>
               <FilterAltIcon />
             </ListItemIcon>
             <ListItemText primary="Authentication" />
           </ListItemButton>
         </ListItem>
-
+    <Box sx={{ml:6}}>
         <ListItem disablePadding>
           <ListItemButton component={NavLink} to="/signup">
             <ListItemIcon>
@@ -78,6 +80,7 @@ function PublicNav(props: Props) {
             <ListItemText primary="Send Verification Link" />
           </ListItemButton>
         </ListItem>
+</Box>
       </List>
       <Divider />
     </div>

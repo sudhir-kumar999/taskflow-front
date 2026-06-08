@@ -21,6 +21,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
   const { setUser } = useContext(userContext)!;
   const navigate = useNavigate();
 
@@ -29,16 +30,19 @@ const Login = () => {
   ) {
     e.preventDefault();
     setLoading(true);
+    setIsClicked(true);
+
     const res = await allAPICall("fetchLogin", formField);
     if (res?.data?.success) {
       const userRes = await allAPICall("getUser");
-      toast.success("login successful");
       setUser(userRes?.data?.data);
       setLoading(false);
       navigate("/todos");
     } else {
       setError(res?.data?.message);
       setLoading(false);
+    setIsClicked(false);
+
     }
   }
   function showPassword() {
@@ -139,6 +143,7 @@ const Login = () => {
             onClick={(e) => handleLogin(e)}
             type="submit"
             size="large"
+disabled = {isClicked}
           >
             {loading ? "loading..." : "Log in"}
           </Button>

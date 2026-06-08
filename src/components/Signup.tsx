@@ -20,7 +20,7 @@ const Signup = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [showPass, setShowPass] = useState(false);
-
+  const [isClicked, setIsClicked] = useState(false);
   const { formField, setFormField } = useContext(userContext)!;
   async function handleSignup(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -28,10 +28,11 @@ const Signup = () => {
     e.preventDefault();
     if (formField.password !== formField.confirmPassword) {
       setError("Confirm Password does not matches");
-      
+
       return;
     }
     setError("");
+    setIsClicked(true);
     let res = await allAPICall("signup", formField);
     setError(res?.data?.message);
     if (res?.data?.success) {
@@ -44,6 +45,15 @@ const Signup = () => {
   function showPassword() {
     setShowPass(!showPass);
   }
+
+  useEffect(() => {
+    setFormField({
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+  }, []);
   return (
     <Box
       sx={{
@@ -89,9 +99,7 @@ const Signup = () => {
             flexDirection: "column",
           }}
         >
-          <Box sx={{ color: "red" }}>
-            {error}
-          </Box>
+          <Box sx={{ color: "red" }}>{error}</Box>
           <Box sx={{ width: 500, maxWidth: "100%" }}>
             <TextField
               fullWidth
@@ -107,6 +115,7 @@ const Signup = () => {
           <Box sx={{ width: 500, maxWidth: "100%" }}>
             <TextField
               fullWidth
+              autoComplete="off"
               label="Enter your Email"
               id="fullWidth"
               value={formField.email}
@@ -163,6 +172,7 @@ const Signup = () => {
             onClick={(e) => handleSignup(e)}
             type="submit"
             size="large"
+            disabled={isClicked}
           >
             Sign Up
           </Button>

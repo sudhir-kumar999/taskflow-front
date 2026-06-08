@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { userContext } from "./userContext/userContext.tsx";
 import { todo, userdetails } from "./type.ts";
 
@@ -41,6 +41,12 @@ AxiosInstance.interceptors.request.use(
   },
   (error) => Promise.reject(error),
 );
+
+// useEffect(()=>{
+    
+// },[])
+
+
 export const allAPICall = async (
   type: string,
   data?: Partial<userdetails & todo>,

@@ -70,9 +70,9 @@ function Navbar(props: Props) {
       <Toolbar />
       <Divider />
       <List>
-        <ListItem disablePadding>
-          <ListItemButton component={NavLink} to="/todos">
-            <ListItemIcon>
+        <ListItem disablePadding> 
+          <ListItemButton component={NavLink} to="/todos" >
+            <ListItemIcon >
               <ChecklistIcon />
             </ListItemIcon>
             <ListItemText primary="All Todo" />
@@ -81,13 +81,16 @@ function Navbar(props: Props) {
         <Divider />
 
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton sx={{ 
+            cursor: 'default !important', 
+          }}>
             <ListItemIcon>
               <FilterAltIcon />
             </ListItemIcon>
             <ListItemText primary="Filter By Status" />
           </ListItemButton>
         </ListItem>
+        <Box sx={{ml:5}}>
         <ListItem disablePadding>
           <ListItemButton component={NavLink} to="/todos/status/ACTIVE">
             <ListItemIcon>
@@ -105,17 +108,22 @@ function Navbar(props: Props) {
           </ListItemButton>
         </ListItem>
         {/* ))} */}
+        </Box>
       </List>
       <Divider />
       <List>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton sx={{ 
+            cursor: 'default !important', 
+          }}>
             <ListItemIcon>
               <PriorityHighIcon />
             </ListItemIcon>
             <ListItemText primary="Filter By Priority" />
           </ListItemButton>
         </ListItem>
+          <Box sx={{ml:5}}>
+
         <ListItem disablePadding>
           <ListItemButton component={NavLink} to="/todos/priority/LOW">
             <ListItemIcon>
@@ -140,6 +148,7 @@ function Navbar(props: Props) {
             <ListItemText primary="HIGH" />
           </ListItemButton>
         </ListItem>
+</Box>
       </List>
       <ListItem sx={{ position: "absolute", bottom: "10px" }} disablePadding>
         <ListItemButton component={NavLink} to="/todos/priority/HIGH">

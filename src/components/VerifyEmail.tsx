@@ -1,30 +1,25 @@
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import React, { useContext, useState } from "react";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import { NavLink } from "react-router-dom";
-import LoginIcon from "@mui/icons-material/Login";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-import { userContext } from "../userContext/userContext.tsx";
 import { allAPICall } from "../api2.ts";
-import { toast } from "react-toastify";
 const VerifyEmail = () => {
-  const adornmentId = React.useId();
-  const textFieldId = React.useId();
-  const sxId = React.useId();
+
   const [email, setEmail] = useState("");
   const [response, setResponse] = useState("");
+  const [isClicked, setIsClicked] = useState(false);
 
   async function handleSignup(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) {
     e.preventDefault();
+    setIsClicked(true);
     const res = await allAPICall("sendLink", { email });
     setResponse(res?.data?.message);
-    toast.success("verification link sent on your email")
     setEmail("");
+    setIsClicked(false);
   }
   return (
     <Box
@@ -102,6 +97,8 @@ const VerifyEmail = () => {
             onClick={(e) => handleSignup(e)}
             type="submit"
             size="large"
+disabled = {isClicked}
+
           >
             Send Link
           </Button>
