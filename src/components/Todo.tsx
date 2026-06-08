@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { SelectChangeEvent } from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -17,10 +17,14 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { todo } from "../type.ts";
 import PushPinIcon from "@mui/icons-material/PushPin";
-import CircularProgress from "@mui/material/CircularProgress";
 import { allAPICall } from "../api2.ts";
 import { RiUnpinFill } from "react-icons/ri";
-
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 const Todo = () => {
   const { status, priority } = useParams();
   const [todos, setTodos] = useState<todo[]>([]);
@@ -31,9 +35,20 @@ const Todo = () => {
     dueDate: "",
   });
   const [loading, setLoading] = useState(false);
-  const { open, setOpen, setSelectTodo, setMainTodo } =
+  const {  setOpen, setSelectTodo, setMainTodo } =
     useContext(userContext)!;
   const [response, setResponse] = useState("");
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [deleteId, setDeleteId] = useState("");
+
+  const handleClickOpen = () => {
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
   const getTodos = async () => {
     setLoading(true);
     let res;
@@ -46,13 +61,11 @@ const Todo = () => {
     } else {
       res = await allAPICall("fetchTodos");
     }
-    // if (res?.data?.message === "JWT expired login again") {
-    //   window.location.href = "/login";
-    //   return;
-    // }
     if (res?.data?.data) {
       setTodos(res.data.data);
       setLoading(false);
+    } else {
+      setTodos([]);
     }
   };
   useEffect(() => {
@@ -70,20 +83,19 @@ const Todo = () => {
     setResponse("");
     setLoading(true);
     const res = await allAPICall("addTodo", data);
-
     if (res?.data?.success === true) {
       toast.success(res.data.message);
       await getTodos();
+      setData({
+        title: "",
+        description: "",
+        priority: "",
+        dueDate: "",
+      });
     } else {
       setResponse(res?.data?.message);
     }
     setLoading(false);
-    setData({
-      title: "",
-      description: "",
-      priority: "",
-      dueDate: "",
-    });
   }
   const handleTodoClick = (todos: todo) => {
     setSelectTodo({ ...todos });
@@ -94,6 +106,14 @@ const Todo = () => {
     const res = await allAPICall("togglePin", { id });
     if (res?.data?.success) {
       getTodos();
+    }
+  };
+  const handleDeleteTodo = async (id: string) => {
+    const res = await allAPICall("deleteTodo", { id });
+    if (res?.data?.success) {
+      toast.success(res.data.message);
+      getTodos();
+      setOpen(false);
     }
   };
   return (
@@ -168,6 +188,7 @@ const Todo = () => {
           ADD
         </Button>
       </Box>
+
       <Box
         sx={{
           display: "grid",
@@ -186,29 +207,56 @@ const Todo = () => {
             sx={{
               display: "flex",
               justifyContent: "center",
-              alignItems: "center",
               height: "100vh",
             }}
           >
-            <CircularProgress aria-label="Loading…" />
+            <p>No todo Found</p>
           </Box>
         ) : (
           todos.map((ele: todo) => (
             <Card
               key={ele.id}
-              sx={{ cursor: "pointer", position: "relative" }}
+              sx={{
+                cursor: "pointer",
+                position: "relative",
+                display: "flex",
+                flexDirection: "column",
+                m: 1,
+              }}
               onClick={() => handleTodoClick(ele)}
             >
-              <IconButton
-                onClick={(e) => {
-                  {
-                    e.stopPropagation();
-                    handlePinMes(ele.id);
-                  }
+              <Card
+                elevation={0}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  ml: 2,
+                  mr: 2,
                 }}
               >
-                {ele?.isPinned ? <RiUnpinFill /> : <PushPinIcon />}
-              </IconButton>
+                <IconButton
+                  onClick={(e) => {
+                    {
+                      e.stopPropagation();
+                      handlePinMes(ele.id);
+                    }
+                  }}
+                >
+                  {ele?.isPinned ? <RiUnpinFill /> : <PushPinIcon />}
+                </IconButton>
+                <IconButton
+                  onClick={(e) => {
+                    {
+                      e.stopPropagation();
+                      //   handleDeleteTodo(ele.id);
+                      setDeleteId(ele?.id);
+                      handleClickOpen();
+                    }
+                  }}
+                >
+                  <DeleteForeverIcon />
+                </IconButton>
+              </Card>
               <CardContent>
                 <Typography variant="h6">Title : {ele.title}</Typography>
                 <Typography variant="body2">
@@ -222,6 +270,39 @@ const Todo = () => {
               </CardContent>
             </Card>
           ))
+        )}
+        {isOpen && (
+          <React.Fragment>
+            <Dialog
+              open={isOpen}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+              role="alertdialog"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Delete Confirmation"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  are you sure want to delete
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} autoFocus>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleClose();
+                    handleDeleteTodo(deleteId);
+                  }}
+                >
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </React.Fragment>
         )}
       </Box>
       <EditTodo getTodos={getTodos} />

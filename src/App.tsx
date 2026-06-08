@@ -21,11 +21,8 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/verify" element={<VerifyEmail />} />
           <Route path="*" element={<NotFound />} />
-
         </Route>
 
-      </Routes>
-      <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path="/todos" element={<Todo />} />
