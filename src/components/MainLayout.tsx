@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import Navbar from "./Navbar.tsx";
 import { Navigate, Outlet } from "react-router-dom";
-import Footer from "./Footer.tsx";
 import Box from "@mui/material/Box";
 import { userContext } from "../userContext/userContext.tsx";
 import CircularProgress from "@mui/material/CircularProgress";
+import PubLayout from "./PubLayout.tsx";
 const MainLayout = () => {
   const { user, loading } = useContext(userContext)!;
   if (loading) {
@@ -24,7 +24,6 @@ const MainLayout = () => {
   if (!user) {
     return <Navigate to="/login" replace />;
   }
-
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
       <Navbar />

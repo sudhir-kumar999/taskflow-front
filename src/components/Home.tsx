@@ -1,9 +1,4 @@
-import React, { useContext } from "react";
-import image from "./hero.png";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { userContext } from "../userContext/userContext.tsx";
 
 const Home = () => {
   return (

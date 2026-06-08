@@ -6,9 +6,9 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Button from "@mui/material/Button";
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { userContext } from "../userContext/userContext.tsx";
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import Typography from "@mui/material/Typography";
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { toast } from "react-toastify";
 import { allAPICall } from "../api2.ts";
 
@@ -20,33 +20,29 @@ const Signup = () => {
   const [error, setError] = useState("");
   const [response, setResponse] = useState(false);
   const navigate = useNavigate();
-  const [showPass,setShowPass]=useState(false)
+  const [showPass, setShowPass] = useState(false);
 
-  const {
-    formField,
-    setFormField,
-  } = useContext(userContext)!;
+  const { formField, setFormField } = useContext(userContext)!;
   async function handleSignup(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) {
     e.preventDefault();
     if (formField.password !== formField.confirmPassword) {
       setError("Confirm Password does not matches");
-      return
+      return;
     }
     setError("");
-    let res = await allAPICall("signup",formField);
+    let res = await allAPICall("signup", formField);
     setResponse(res?.data?.message);
     if (res?.data?.success) {
       navigate("/login");
-            toast.success("signup successful")
-      
+      toast.success("signup successful");
     } else {
       setResponse(res?.data?.message);
     }
   }
-  function showPassword(){
-    setShowPass(!showPass)
+  function showPassword() {
+    setShowPass(!showPass);
   }
   return (
     <Box
@@ -93,7 +89,10 @@ const Signup = () => {
             flexDirection: "column",
           }}
         >
-          <Box sx={{ color: "red" }}>{response}{error}</Box>
+          <Box sx={{ color: "red" }}>
+            {response}
+            {error}
+          </Box>
           <Box sx={{ width: 500, maxWidth: "100%" }}>
             <TextField
               fullWidth
@@ -121,8 +120,7 @@ const Signup = () => {
             <TextField
               fullWidth
               label="Enter password"
-              type={showPass?"text":"password"}
-
+              type={showPass ? "text" : "password"}
               id="fullWidth"
               value={formField.password}
               onChange={(e) => {
@@ -135,14 +133,20 @@ const Signup = () => {
               fullWidth
               label="Confirm the above password"
               id="fullWidth"
-              type={showPass?"text":"password"}
+              type={showPass ? "text" : "password"}
               value={formField.confirmPassword}
               onChange={(e) => {
                 setFormField({ ...formField, confirmPassword: e.target.value });
               }}
             />
-            <Typography variant="body1" component="span" sx={{position:"absolute",ml:-6, mt:2}} onClick={showPassword}>{showPass?<VisibilityOffIcon  sx={{}}/>:<VisibilityIcon />}</Typography>
-              
+            <Typography
+              variant="body1"
+              component="span"
+              sx={{ position: "absolute", ml: -6, mt: 2 }}
+              onClick={showPassword}
+            >
+              {showPass ? <VisibilityOffIcon sx={{}} /> : <VisibilityIcon />}
+            </Typography>
           </Box>
           <Box
             sx={{
@@ -155,7 +159,6 @@ const Signup = () => {
             <NavLink to="/login">Already register ? Login here</NavLink>
             <NavLink to="/verify">Resend Verification link</NavLink>
           </Box>
-
           <Button
             variant="contained"
             onClick={(e) => handleSignup(e)}

@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { userContext } from "../userContext/userContext.tsx";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -15,12 +15,14 @@ import { toast } from "react-toastify";
 import { priority, todo } from "../type.ts";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import { allAPICall } from "../api2.ts";
+import Typography from "@mui/material/Typography";
 type props = {
   getTodos: () => Promise<void>;
 };
 const EditTodo = ({ getTodos }: props) => {
   const { selectTodo, setSelectTodo, mainTodo, open, setOpen } =
     useContext(userContext)!;
+  const [res, setRes] = useState("");
 
   const upDateTodoNew = async () => {
     if (!selectTodo) {
@@ -35,18 +37,20 @@ const EditTodo = ({ getTodos }: props) => {
       priority: selectTodo.priority,
       status: selectTodo.status,
       dueDate: selectTodo.dueDate,
-      id:selectTodo.id
+      id: selectTodo.id,
     });
     if (res?.data.success) {
       toast.success("todo updated successfully");
       await getTodos();
       setOpen(false);
+    } else {
+      setRes(res?.data?.message);
     }
   };
 
   const handleDeleteTodo = async () => {
     if (!selectTodo) return null;
-    const res = await allAPICall("deleteTodo",{id:selectTodo.id});
+    const res = await allAPICall("deleteTodo", { id: selectTodo.id });
     if (res?.data?.success) {
       toast.success(res.data.message);
       await getTodos();
@@ -108,6 +112,7 @@ const EditTodo = ({ getTodos }: props) => {
             <MenuItem value="HIGH">HIGH</MenuItem>
           </Select>
         </FormControl>
+        <Typography sx={{ color: "red" }}>{res}</Typography>
       </DialogContent>
       <DialogActions>
         <Button variant="contained" onClick={() => setOpen(false)}>
