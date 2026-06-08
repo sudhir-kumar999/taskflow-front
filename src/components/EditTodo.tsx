@@ -12,8 +12,6 @@ import MenuItem from "@mui/material/MenuItem";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { toast } from "react-toastify";
-import { priority, todo } from "../type.ts";
-import PushPinIcon from "@mui/icons-material/PushPin";
 import { allAPICall } from "../api2.ts";
 import Typography from "@mui/material/Typography";
 type props = {
@@ -71,7 +69,6 @@ const EditTodo = ({ getTodos }: props) => {
             setSelectTodo({ ...selectTodo, title: e.target.value });
           }}
         />
-
         <TextField
           label="description"
           value={selectTodo?.description || ""}
@@ -95,7 +92,6 @@ const EditTodo = ({ getTodos }: props) => {
             <MenuItem value="COMPLETED">COMPLETED</MenuItem>
           </Select>
         </FormControl>
-
         <FormControl>
           <InputLabel>Priority</InputLabel>
           <Select

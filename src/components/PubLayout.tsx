@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Navbar from "./Navbar.tsx";
 import { Navigate, Outlet } from "react-router-dom";
 import { userContext } from "../userContext/userContext.tsx";
@@ -24,6 +24,7 @@ const PubLayout = () => {
   if (user) {
     return <Navigate to="/todos" replace />;
   }
+
   return (
     <Box
       sx={{
