@@ -35,6 +35,12 @@ AxiosInstance.interceptors.response.use(
   },
 );
 
+AxiosInstance.interceptors.request.use(
+  (config) => {
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
 export const allAPICall = async (
   type: string,
   data?: Partial<userdetails & todo>,

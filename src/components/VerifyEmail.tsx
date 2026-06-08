@@ -9,6 +9,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import { userContext } from "../userContext/userContext.tsx";
 import { allAPICall } from "../api2.ts";
+import { toast } from "react-toastify";
 const VerifyEmail = () => {
   const adornmentId = React.useId();
   const textFieldId = React.useId();
@@ -22,6 +23,7 @@ const VerifyEmail = () => {
     e.preventDefault();
     const res = await allAPICall("sendLink", { email });
     setResponse(res?.data?.message);
+    toast.success("verification link sent on your email")
     setEmail("");
   }
   return (

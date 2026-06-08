@@ -18,7 +18,6 @@ const Signup = () => {
   const sxId = React.useId();
 
   const [error, setError] = useState("");
-  const [response, setResponse] = useState(false);
   const navigate = useNavigate();
   const [showPass, setShowPass] = useState(false);
 
@@ -29,16 +28,17 @@ const Signup = () => {
     e.preventDefault();
     if (formField.password !== formField.confirmPassword) {
       setError("Confirm Password does not matches");
+      
       return;
     }
     setError("");
     let res = await allAPICall("signup", formField);
-    setResponse(res?.data?.message);
+    setError(res?.data?.message);
     if (res?.data?.success) {
       navigate("/login");
       toast.success("signup successful");
     } else {
-      setResponse(res?.data?.message);
+      setError(res?.data?.message);
     }
   }
   function showPassword() {
@@ -90,7 +90,6 @@ const Signup = () => {
           }}
         >
           <Box sx={{ color: "red" }}>
-            {response}
             {error}
           </Box>
           <Box sx={{ width: 500, maxWidth: "100%" }}>

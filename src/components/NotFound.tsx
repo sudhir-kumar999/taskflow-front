@@ -26,10 +26,11 @@ const NotFound = () => {
       );
     }
     if (user) {
+      setLoading(true);
       navigate("/todos");
+      setLoading(false);
     } else {
       setLoading(true);
-
       navigate("/login");
       setLoading(false);
     }
