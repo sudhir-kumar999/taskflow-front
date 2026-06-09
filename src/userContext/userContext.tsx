@@ -6,10 +6,6 @@ type userdetails = {
   password: string;
   confirmPassword: string;
 };
-type login = {
-  email: string;
-  password: string;
-};
 
 type userres = {
   id: string;
@@ -20,6 +16,8 @@ type contextType = {
   formField: userdetails;
   user: userres | null;
   loading: boolean;
+  logData:string|null
+  setLogData:React.Dispatch<React.SetStateAction<string|null>>
   selectTodo: todo | null;
   setSelectTodo: React.Dispatch<React.SetStateAction<todo | null>>;
   open: boolean;
