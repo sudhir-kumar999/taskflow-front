@@ -34,204 +34,204 @@ interface Props {
 }
 
 function Navbar(props: Props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isClosing, setIsClosing] = React.useState(false);
-  const navigate = useNavigate();
-  const { setUser, user } = React.useContext(userContext)!;
+    const { window } = props;
+    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [isClosing, setIsClosing] = React.useState(false);
+    const navigate = useNavigate();
+    const { setUser, user } = React.useContext(userContext)!;
 
-  const handleDrawerClose = () => {
-    setIsClosing(true);
-    setMobileOpen(false);
-  };
+    const handleDrawerClose = () => {
+        setIsClosing(true);
+        setMobileOpen(false);
+    };
 
-  const handleDrawerTransitionEnd = () => {
-    setIsClosing(false);
-  };
+    const handleDrawerTransitionEnd = () => {
+        setIsClosing(false);
+    };
 
-  const handleDrawerToggle = () => {
-    if (!isClosing) {
-      setMobileOpen(!mobileOpen);
+    const handleDrawerToggle = () => {
+        if (!isClosing) {
+            setMobileOpen(!mobileOpen);
+        }
+    };
+
+    const handleLogout = async () => {
+        await allAPICall("logout");
+        toast.success("logout successful");
+        setUser(null);
+        navigate("/login");
+    };
+    if (!user) {
+        return <PublicNav />;
     }
-  };
 
-  const handleLogout = async () => {
-    const res = await allAPICall("logout");
-    toast.success("logout successful");
-    setUser(null);
-    navigate("/login");
-  };
-  if (!user) {
-    return <PublicNav />;
-  }
+    const drawer = (
+        <div>
+            <Toolbar />
+            <Divider />
+            <List>
+                <ListItem disablePadding> 
+                    <ListItemButton component={NavLink} to="/todos" >
+                        <ListItemIcon >
+                            <ChecklistIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="All Todo" />
+                    </ListItemButton>
+                </ListItem>
+                <Divider />
 
-  const drawer = (
-    <div>
-      <Toolbar />
-      <Divider />
-      <List>
-        <ListItem disablePadding> 
-          <ListItemButton component={NavLink} to="/todos" >
-            <ListItemIcon >
-              <ChecklistIcon />
-            </ListItemIcon>
-            <ListItemText primary="All Todo" />
-          </ListItemButton>
-        </ListItem>
-        <Divider />
+                <ListItem disablePadding>
+                    <ListItemButton sx={{ 
+                        cursor: 'default !important', 
+                    }}>
+                        <ListItemIcon>
+                            <FilterAltIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Filter By Status" />
+                    </ListItemButton>
+                </ListItem>
+                <Box sx={{ml:5}}>
+                    <ListItem disablePadding>
+                        <ListItemButton component={NavLink} to="/todos/status/ACTIVE">
+                            <ListItemIcon>
+                                <PendingActionsIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="ACTIVE" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component={NavLink} to="/todos/status/COMPLETED">
+                            <ListItemIcon>
+                                <DoneAllIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="COMPLETED" />
+                        </ListItemButton>
+                    </ListItem>
+                    {/* ))} */}
+                </Box>
+            </List>
+            <Divider />
+            <List>
+                <ListItem disablePadding>
+                    <ListItemButton sx={{ 
+                        cursor: 'default !important', 
+                    }}>
+                        <ListItemIcon>
+                            <PriorityHighIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Filter By Priority" />
+                    </ListItemButton>
+                </ListItem>
+                <Box sx={{ml:5}}>
 
-        <ListItem disablePadding>
-          <ListItemButton sx={{ 
-            cursor: 'default !important', 
-          }}>
-            <ListItemIcon>
-              <FilterAltIcon />
-            </ListItemIcon>
-            <ListItemText primary="Filter By Status" />
-          </ListItemButton>
-        </ListItem>
-        <Box sx={{ml:5}}>
-        <ListItem disablePadding>
-          <ListItemButton component={NavLink} to="/todos/status/ACTIVE">
-            <ListItemIcon>
-              <PendingActionsIcon />
-            </ListItemIcon>
-            <ListItemText primary="ACTIVE" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton component={NavLink} to="/todos/status/COMPLETED">
-            <ListItemIcon>
-              <DoneAllIcon />
-            </ListItemIcon>
-            <ListItemText primary="COMPLETED" />
-          </ListItemButton>
-        </ListItem>
-        {/* ))} */}
-        </Box>
-      </List>
-      <Divider />
-      <List>
-        <ListItem disablePadding>
-          <ListItemButton sx={{ 
-            cursor: 'default !important', 
-          }}>
-            <ListItemIcon>
-              <PriorityHighIcon />
-            </ListItemIcon>
-            <ListItemText primary="Filter By Priority" />
-          </ListItemButton>
-        </ListItem>
-          <Box sx={{ml:5}}>
+                    <ListItem disablePadding>
+                        <ListItemButton component={NavLink} to="/todos/priority/LOW">
+                            <ListItemIcon>
+                                <LowPriorityIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="LOW" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component={NavLink} to="/todos/priority/MEDIUM">
+                            <ListItemIcon>
+                                <DensityMediumIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="MEDIUM" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component={NavLink} to="/todos/priority/HIGH">
+                            <ListItemIcon>
+                                <KeyboardDoubleArrowUpIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="HIGH" />
+                        </ListItemButton>
+                    </ListItem>
+                </Box>
+            </List>
+            <ListItem sx={{ position: "absolute", bottom: "10px" }} disablePadding>
+                <ListItemButton component={NavLink} to="/todos/priority/HIGH">
+                    <ListItemIcon>
+                        <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Logout" onClick={handleLogout} />
+                </ListItemButton>
+            </ListItem>
+        </div>
+    );
 
-        <ListItem disablePadding>
-          <ListItemButton component={NavLink} to="/todos/priority/LOW">
-            <ListItemIcon>
-              <LowPriorityIcon />
-            </ListItemIcon>
-            <ListItemText primary="LOW" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton component={NavLink} to="/todos/priority/MEDIUM">
-            <ListItemIcon>
-              <DensityMediumIcon />
-            </ListItemIcon>
-            <ListItemText primary="MEDIUM" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton component={NavLink} to="/todos/priority/HIGH">
-            <ListItemIcon>
-              <KeyboardDoubleArrowUpIcon />
-            </ListItemIcon>
-            <ListItemText primary="HIGH" />
-          </ListItemButton>
-        </ListItem>
-</Box>
-      </List>
-      <ListItem sx={{ position: "absolute", bottom: "10px" }} disablePadding>
-        <ListItemButton component={NavLink} to="/todos/priority/HIGH">
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText primary="Logout" onClick={handleLogout} />
-        </ListItemButton>
-      </ListItem>
-    </div>
-  );
-
-  // Remove this const when copying and pasting into your project.
-  const container =
+    // Remove this const when copying and pasting into your project.
+    const container =
     window !== undefined ? () => window().document.body : undefined;
 
-  return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
+    return (
+        <Box sx={{ display: "flex" }}>
+            <CssBaseline />
+            <AppBar
+                position="fixed"
+                sx={{
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    ml: { sm: `${drawerWidth}px` },
+                }}
+            >
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{ mr: 2, display: { sm: "none" } }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" noWrap component="div">
             TaskFlow
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onTransitionEnd={handleDrawerTransitionEnd}
-          onClose={handleDrawerClose}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          slotProps={{
-            root: {
-              keepMounted: true, // Better open performance on mobile.
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-      {/* <Box
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Box
+                component="nav"
+                sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                aria-label="mailbox folders"
+            >
+                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+                <Drawer
+                    container={container}
+                    variant="temporary"
+                    open={mobileOpen}
+                    onTransitionEnd={handleDrawerTransitionEnd}
+                    onClose={handleDrawerClose}
+                    sx={{
+                        display: { xs: "block", sm: "none" },
+                        "& .MuiDrawer-paper": {
+                            boxSizing: "border-box",
+                            width: drawerWidth,
+                        },
+                    }}
+                    slotProps={{
+                        root: {
+                            keepMounted: true, // Better open performance on mobile.
+                        },
+                    }}
+                >
+                    {drawer}
+                </Drawer>
+                <Drawer
+                    variant="permanent"
+                    sx={{
+                        display: { xs: "none", sm: "block" },
+                        "& .MuiDrawer-paper": {
+                            boxSizing: "border-box",
+                            width: drawerWidth,
+                        },
+                    }}
+                    open
+                >
+                    {drawer}
+                </Drawer>
+            </Box>
+            {/* <Box
         component="main"
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
@@ -264,8 +264,8 @@ function Navbar(props: Props) {
           posuere sollicitudin aliquam ultrices sagittis orci a.
         </Typography>
       </Box> */}
-    </Box>
-  );
+        </Box>
+    );
 }
 
 export default Navbar;
