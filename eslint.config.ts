@@ -17,7 +17,6 @@ export default defineConfig([
       "no-unused-vars":"off",
       "@typescript-eslint/no-unused-vars":["warn"],
       "no-console":"warn",
-      // "quotes":["error","double"],
       "indent":["error",4],
       "no-multiple-empty-lines":["error",{max:1}],
       "padded-blocks":["error","never"],

@@ -23,6 +23,7 @@ const Signup = () => {
         e.preventDefault();
         if (formField.password !== formField.confirmPassword) {
             setError("Confirm Password does not matches");
+            setIsClicked(false)
             return;
         }
         setError("");
@@ -34,6 +35,7 @@ const Signup = () => {
             toast.success("signup successful");
         } else {
             setError(res?.data?.message);
+            setIsClicked(false)
         }
     }
     function showPassword() {
